@@ -1,16 +1,13 @@
 import React from "react";
 import { useWeather } from "../hooks/useWeather";
 import { useI18n } from "../hooks/useI18n";
-import {
-  getWeatherIcon,
-  formatTemperature,
-  getWeatherDescription,
-} from "../utils/weatherUtils";
+import { useTheme } from "../hooks/useTheme";
 import "../styles/WeatherHeader.css";
 
 export const WeatherHeader: React.FC = () => {
   const { currentWeather, units, setUnits } = useWeather();
   const { language, setLanguage, t } = useI18n();
+  const { theme, toggleTheme } = useTheme();
 
   if (!currentWeather) {
     return null;
@@ -18,26 +15,6 @@ export const WeatherHeader: React.FC = () => {
 
   return (
     <div className="weather-header">
-      <div className="header-weather-info">
-        <div className="header-location">
-          <span className="header-city">{currentWeather.name}</span>
-          <span className="header-country">{currentWeather.sys.country}</span>
-        </div>
-
-        <div className="header-weather">
-          {currentWeather.weather[0]?.icon && (
-            <img
-              src={getWeatherIcon(currentWeather.weather[0].icon)}
-              alt={getWeatherDescription(currentWeather)}
-              className="header-weather-icon"
-            />
-          )}
-          <div className="header-temp">
-            {formatTemperature(currentWeather.main.temp)}
-          </div>
-        </div>
-      </div>
-
       <div className="header-controls">
         <div className="language-toggle">
           <button
@@ -66,6 +43,18 @@ export const WeatherHeader: React.FC = () => {
             onClick={() => setUnits("imperial")}
           >
             {t("header.units.fahrenheit")}
+          </button>
+        </div>
+
+        <div className="theme-toggle">
+          <button
+            className="theme-btn"
+            onClick={toggleTheme}
+            aria-label={
+              theme === "light" ? "Switch to dark mode" : "Switch to light mode"
+            }
+          >
+            {theme === "light" ? "🌙" : "☀️"}
           </button>
         </div>
       </div>

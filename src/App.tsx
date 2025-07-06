@@ -2,13 +2,16 @@ import "./App.css";
 import { WeatherHeader } from "./components/WeatherHeader";
 import { HomePage } from "./pages/HomePage";
 import { I18nProvider } from "./contexts/I18nContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
 
 function App() {
   return (
-    <I18nProvider>
-      <WeatherHeader />
-      <HomePage />
-    </I18nProvider>
+    <ThemeProvider>
+      <I18nProvider>
+        <WeatherHeader />
+        <HomePage />
+      </I18nProvider>
+    </ThemeProvider>
   );
 }
 
