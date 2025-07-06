@@ -1,13 +1,14 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
+import { WeatherHeader } from "./components/WeatherHeader";
+import { HomePage } from "./pages/HomePage";
+import { I18nProvider } from "./contexts/I18nContext";
 
 function App() {
   return (
-    <>
-      <h1>Hello World</h1>
-    </>
+    <I18nProvider>
+      <WeatherHeader />
+      <HomePage />
+    </I18nProvider>
   );
 }
 
