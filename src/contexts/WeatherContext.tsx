@@ -55,7 +55,6 @@ export const WeatherProvider: React.FC<WeatherProviderProps> = ({
     enabled: !!coordsParams,
   });
 
-  // Forecast queries
   const forecastByCityQuery = useQuery({
     queryKey: ["forecast", queryParams?.city, units],
     queryFn: () => {

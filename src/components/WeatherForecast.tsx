@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useWeather } from "../hooks/useWeather";
 import { useI18n } from "../hooks/useI18n";
 import { getWeatherIcon, formatTemperature } from "../utils/weatherUtils";
@@ -9,6 +10,7 @@ import "../styles/WeatherForecast.css";
 export const WeatherForecast: React.FC = () => {
   const { forecast, isLoadingForecast, forecastError } = useWeather();
   const { t } = useI18n();
+  const navigate = useNavigate();
 
   if (isLoadingForecast) {
     return (
@@ -47,7 +49,11 @@ export const WeatherForecast: React.FC = () => {
       <div className="forecast-container">
         <div className="forecast-list">
           {forecast.map((day) => (
-            <div key={day.date} className={`forecast-day`}>
+            <div
+              key={day.date}
+              className={`forecast-day clickable`}
+              onClick={() => navigate(`/weather/${day.date}`)}
+            >
               <div className="day-info">
                 <div className="day-name">{day.day}</div>
                 <div className="day-date">

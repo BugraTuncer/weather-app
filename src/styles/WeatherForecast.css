@@ -1,27 +1,21 @@
 .weather-forecast {
-  background: var(--card-bg);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
   padding: 30px;
   margin: 20px 0;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border-color);
-  transition: background-color 0.3s ease;
 }
 
 .forecast-title {
   font-size: 1.8rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 25px 0;
   text-align: center;
 }
 
 .forecast-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: row;
   gap: 30px;
-  align-items: start;
+  justify-content: center;
+  align-items: center;
 }
 
 .forecast-list {
@@ -39,6 +33,43 @@
   border-radius: 12px;
   transition: all 0.3s ease;
   border: 2px solid transparent;
+}
+
+.forecast-day.clickable {
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.forecast-day.clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-color: var(--accent-color);
+  background: var(--card-bg);
+}
+
+.forecast-day.clickable:active {
+  transform: translateY(0);
+}
+
+.forecast-day.clickable::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.forecast-day.clickable:hover::before {
+  left: 100%;
 }
 
 .day-info {
