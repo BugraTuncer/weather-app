@@ -19,6 +19,12 @@ export const formatWindSpeed = (speed: number): string => {
   return `${speed} m/s`;
 };
 
+export const getWindDirection = (): string => {
+  // Since we don't have wind direction data in the current forecast structure,
+  // we'll return a generic direction indicator
+  return "↗";
+};
+
 export const formatVisibility = (visibility: number): string => {
   return `${visibility / 1000} km`;
 };

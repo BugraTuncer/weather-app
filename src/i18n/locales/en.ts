@@ -17,6 +17,14 @@ export const en = {
     loadingWeatherData: "Loading weather data...",
   },
 
+  search: {
+    placeholder: "Enter city name...",
+    search: "Search",
+    searching: "Searching...",
+    getMyLocation: "Get My Location",
+    gettingLocation: "Getting Location...",
+  },
+
   forecast: {
     title: "7-Day Forecast",
     loadingForecast: "Loading forecast...",
@@ -26,6 +34,23 @@ export const en = {
       "Weather forecast will appear here once location is set.",
     high: "High",
     low: "Low",
+  },
+
+  detail: {
+    title: "Weather Details",
+    back: "Back",
+    loadingData: "Loading weather data...",
+    dataUnavailable: "Weather Data Unavailable",
+    noData: "No Data Available",
+    noDataMessage: "Unable to load weather details for this day.",
+    dayNotFound: "Day Not Found",
+    dayNotFoundMessage: "The selected day could not be found in the forecast.",
+    temperature: "Temperature",
+    maxTemp: "Maximum",
+    minTemp: "Minimum",
+    humidity: "Humidity",
+    wind: "Wind Speed",
+    location: "Location",
   },
 
   header: {

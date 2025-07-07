@@ -17,6 +17,14 @@ export const es = {
     loadingWeatherData: "Cargando datos del clima...",
   },
 
+  search: {
+    placeholder: "Ingresa el nombre de la ciudad...",
+    search: "Buscar",
+    searching: "Buscando...",
+    getMyLocation: "Obtener Mi Ubicación",
+    gettingLocation: "Obteniendo Ubicación...",
+  },
+
   forecast: {
     title: "Pronóstico de 7 Días",
     loadingForecast: "Cargando pronóstico...",
@@ -26,6 +34,25 @@ export const es = {
       "El pronóstico del clima aparecerá aquí una vez que se establezca la ubicación.",
     high: "Máx",
     low: "Mín",
+  },
+
+  detail: {
+    title: "Detalles del Clima",
+    back: "Volver",
+    loadingData: "Cargando datos del clima...",
+    dataUnavailable: "Datos del Clima No Disponibles",
+    noData: "No Hay Datos Disponibles",
+    noDataMessage:
+      "No se pudieron cargar los detalles del clima para este día.",
+    dayNotFound: "Día No Encontrado",
+    dayNotFoundMessage:
+      "El día seleccionado no se pudo encontrar en el pronóstico.",
+    temperature: "Temperatura",
+    maxTemp: "Máxima",
+    minTemp: "Mínima",
+    humidity: "Humedad",
+    wind: "Velocidad del Viento",
+    location: "Ubicación",
   },
 
   header: {
