@@ -1,24 +1,31 @@
 import "./styles/App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "./store";
 import { WeatherHeader } from "./components/WeatherHeader";
 import { HomePage } from "./pages/HomePage";
 import { WeatherDetailPage } from "./pages/WeatherDetailPage";
-import { I18nProvider } from "./contexts/I18nContext";
-import { ThemeProvider } from "./contexts/ThemeContext";
+import { useThemeEffect } from "./hooks/useThemeEffect";
+
+function AppContent() {
+  useThemeEffect();
+
+  return (
+    <Router>
+      <WeatherHeader />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/weather/:date" element={<WeatherDetailPage />} />
+      </Routes>
+    </Router>
+  );
+}
 
 function App() {
   return (
-    <Router>
-      <ThemeProvider>
-        <I18nProvider>
-          <WeatherHeader />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/weather/:date" element={<WeatherDetailPage />} />
-          </Routes>
-        </I18nProvider>
-      </ThemeProvider>
-    </Router>
+    <Provider store={store}>
+      <AppContent />
+    </Provider>
   );
 }
 

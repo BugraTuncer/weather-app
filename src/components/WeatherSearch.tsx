@@ -1,17 +1,21 @@
 import React, { useState } from "react";
-import { useWeather } from "../hooks/useWeather";
+import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { useI18n } from "../hooks/useI18n";
+import { setQueryParams } from "../store/slices/weatherSlice";
 import "../styles/WeatherSearch.css";
 
 export const WeatherSearch: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const { fetchWeatherByCity, isLoading, isLoadingLocation } = useWeather();
+  const dispatch = useAppDispatch();
+  const { isLoading, isLoadingLocation, units } = useAppSelector(
+    (state) => state.weather
+  );
   const { t } = useI18n();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      fetchWeatherByCity(searchQuery.trim());
+      dispatch(setQueryParams({ city: searchQuery.trim(), units }));
     }
   };
 

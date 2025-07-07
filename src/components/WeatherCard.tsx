@@ -9,8 +9,8 @@ import {
   formatPressure,
   formatVisibility,
 } from "../utils/weatherUtils";
-import type { WeatherData } from "../services/weatherApi";
 import "../styles/WeatherCard.css";
+import type { WeatherData } from "../models/weatherDto";
 
 interface WeatherCardProps {
   weather: WeatherData;

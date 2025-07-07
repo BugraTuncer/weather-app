@@ -1,7 +1,7 @@
 import React from "react";
 import { getWeatherIcon, formatTemperature } from "../utils/weatherUtils";
-import type { DailyForecast } from "../contexts/WeatherContextInstance";
 import "../styles/WeatherForecast.css";
+import type { DailyForecast } from "../models/weatherDto";
 
 interface WeatherForecastProps {
   forecast: DailyForecast[];

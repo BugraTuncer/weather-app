@@ -141,3 +141,25 @@
     width: 100%;
   }
 }
+
+@media (min-width: 820px) and (max-width: 1180px) {
+  .weather-search {
+    max-width: 600px;
+  }
+
+  .search-input {
+    padding: 0.85rem 1.2rem;
+    font-size: 1.05rem;
+  }
+
+  .search-button {
+    padding: 0.85rem 1.8rem;
+    font-size: 1.05rem;
+    min-width: 120px;
+  }
+
+  .location-button {
+    padding: 0.85rem 1.8rem;
+    font-size: 1.05rem;
+  }
+}

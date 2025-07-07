@@ -90,6 +90,7 @@
   background: var(--bg-secondary);
   border-radius: 12px;
   border: 1px solid var(--border-color);
+  gap: 10px;
 }
 
 .detail-label {
@@ -127,6 +128,54 @@
 
 .refresh-button:active {
   transform: translateY(0);
+}
+
+@media (min-width: 820px) and (max-width: 1180px) {
+  .weather-card {
+    padding: 25px;
+  }
+
+  .city-name {
+    font-size: 2.2rem;
+  }
+
+  .current-temp {
+    font-size: 3.2rem;
+  }
+
+  .weather-main {
+    gap: 25px;
+  }
+
+  .weather-icon {
+    width: 75px;
+    height: 75px;
+  }
+
+  .weather-description {
+    font-size: 1.15rem;
+  }
+
+  .weather-details {
+    gap: 18px;
+  }
+
+  .detail-item {
+    padding: 14px;
+  }
+
+  .detail-label {
+    font-size: 0.85rem;
+  }
+
+  .detail-value {
+    font-size: 1.05rem;
+  }
+
+  .refresh-button {
+    padding: 14px;
+    font-size: 1.05rem;
+  }
 }
 
 @media (max-width: 768px) {

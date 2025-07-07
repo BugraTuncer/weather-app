@@ -1,33 +1,36 @@
 import React from "react";
-import { useWeather } from "../hooks/useWeather";
+import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { useI18n } from "../hooks/useI18n";
-import { useTheme } from "../hooks/useTheme";
+import { setUnits } from "../store/slices/weatherSlice";
+import { setLanguage, toggleDarkMode } from "../store/slices/uiSlice";
 import "../styles/WeatherHeader.css";
 
 export const WeatherHeader: React.FC = () => {
-  const { currentWeather, units, setUnits } = useWeather();
-  const { language, setLanguage, t } = useI18n();
-  const { theme, toggleTheme } = useTheme();
+  const dispatch = useAppDispatch();
+  const { currentWeather, units } = useAppSelector((state) => state.weather);
+  const { language, isDarkMode } = useAppSelector(
+    (state) => state.ui as { language: "en" | "es"; isDarkMode: boolean }
+  );
+  const { t } = useI18n();
 
   if (!currentWeather) {
     return null;
   }
 
-  console.log(currentWeather);
-
   return (
     <div className="weather-header">
+      <h1 className="header-title">Weather App</h1>
       <div className="header-controls">
         <div className="language-toggle">
           <button
             className={`lang-btn ${language === "en" ? "active" : ""}`}
-            onClick={() => setLanguage("en")}
+            onClick={() => dispatch(setLanguage("en"))}
           >
             EN
           </button>
           <button
             className={`lang-btn ${language === "es" ? "active" : ""}`}
-            onClick={() => setLanguage("es")}
+            onClick={() => dispatch(setLanguage("es"))}
           >
             ES
           </button>
@@ -36,13 +39,13 @@ export const WeatherHeader: React.FC = () => {
         <div className="units-toggle">
           <button
             className={`unit-btn ${units === "metric" ? "active" : ""}`}
-            onClick={() => setUnits("metric")}
+            onClick={() => dispatch(setUnits("metric"))}
           >
             {t("header.units.celsius")}
           </button>
           <button
             className={`unit-btn ${units === "imperial" ? "active" : ""}`}
-            onClick={() => setUnits("imperial")}
+            onClick={() => dispatch(setUnits("imperial"))}
           >
             {t("header.units.fahrenheit")}
           </button>
@@ -51,12 +54,12 @@ export const WeatherHeader: React.FC = () => {
         <div className="theme-toggle">
           <button
             className="theme-btn"
-            onClick={toggleTheme}
+            onClick={() => dispatch(toggleDarkMode())}
             aria-label={
-              theme === "light" ? "Switch to dark mode" : "Switch to light mode"
+              !isDarkMode ? "Switch to dark mode" : "Switch to light mode"
             }
           >
-            {theme === "light" ? "🌙" : "☀️"}
+            {!isDarkMode ? "🌙" : "☀️"}
           </button>
         </div>
       </div>

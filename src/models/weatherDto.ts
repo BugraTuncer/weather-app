@@ -90,3 +90,17 @@ export interface ForecastItem {
   };
   dt_txt: string;
 }
+export interface DailyForecast {
+  date: string;
+  day: string;
+  temp_min: number;
+  temp_max: number;
+  humidity: number;
+  wind_speed: number;
+  weather: {
+    id: number;
+    main: string;
+    description: string;
+    icon: string;
+  };
+}

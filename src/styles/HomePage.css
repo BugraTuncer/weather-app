@@ -59,3 +59,15 @@
     gap: 8px;
   }
 }
+
+@media (min-width: 820px) and (max-width: 1180px) {
+  .home-page {
+    padding: 25px;
+    padding-top: 120px;
+  }
+
+  .home-container {
+    gap: 25px;
+    max-width: 1000px;
+  }
+}

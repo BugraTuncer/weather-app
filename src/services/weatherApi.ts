@@ -14,7 +14,8 @@ export class WeatherApiService {
 
   async getCurrentWeatherByCity(
     city: string,
-    units: "metric" | "imperial" = "metric"
+    units: "metric" | "imperial" = "metric",
+    lang: "en" | "es" = "en"
   ): Promise<WeatherData> {
     try {
       const response = await axios.get<WeatherData>(WEATHER_API_BASE_URL, {
@@ -22,6 +23,7 @@ export class WeatherApiService {
           q: city,
           appid: this.apiKey,
           units: units,
+          lang: lang,
         },
       });
       return response.data;
@@ -33,7 +35,8 @@ export class WeatherApiService {
   async getCurrentWeatherByCoords(
     lat: number,
     lon: number,
-    units: "metric" | "imperial" = "metric"
+    units: "metric" | "imperial" = "metric",
+    lang: "en" | "es" = "en"
   ): Promise<WeatherData> {
     try {
       const response = await axios.get<WeatherData>(WEATHER_API_BASE_URL, {
@@ -42,6 +45,7 @@ export class WeatherApiService {
           lon: lon,
           appid: this.apiKey,
           units: units,
+          lang: lang,
         },
       });
       return response.data;
@@ -54,7 +58,8 @@ export class WeatherApiService {
 
   async getForecastByCity(
     city: string,
-    units: "metric" | "imperial" = "metric"
+    units: "metric" | "imperial" = "metric",
+    lang: "en" | "es" = "en"
   ): Promise<ForecastData> {
     try {
       const response = await axios.get<ForecastData>(FORECAST_API_BASE_URL, {
@@ -63,6 +68,7 @@ export class WeatherApiService {
           appid: this.apiKey,
           units: units,
           cnt: 40,
+          lang: lang,
         },
       });
       return response.data;
@@ -74,7 +80,8 @@ export class WeatherApiService {
   async getForecastByCoords(
     lat: number,
     lon: number,
-    units: "metric" | "imperial" = "metric"
+    units: "metric" | "imperial" = "metric",
+    lang: "en" | "es" = "en"
   ): Promise<ForecastData> {
     try {
       const response = await axios.get<ForecastData>(FORECAST_API_BASE_URL, {
@@ -84,6 +91,7 @@ export class WeatherApiService {
           appid: this.apiKey,
           units: units,
           cnt: 40,
+          lang: lang,
         },
       });
       return response.data;

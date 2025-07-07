@@ -2,8 +2,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 20px;
   min-height: 60vh;
   font-family: Roboto, sans-serif;
+}
+
+@media (min-width: 820px) and (max-width: 1180px) {
+  .weather-display {
+    min-height: 55vh;
+    padding: 0 20px;
+    gap: 25px;
+  }
 }
 
 @media (max-width: 768px) {
