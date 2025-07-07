@@ -81,7 +81,6 @@
 .unit-btn.active {
   background: var(--accent-color);
   color: white;
-  box-shadow: 0 2px 4px rgba(100, 108, 255, 0.3);
 }
 
 .unit-btn:hover:not(.active) {
@@ -115,7 +114,6 @@
   transform: scale(1.05);
 }
 
-/* Responsive design */
 @media (max-width: 1024px) {
   .weather-header {
     padding: 0.9rem 1.5rem;

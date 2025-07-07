@@ -20,47 +20,42 @@ interface I18nProviderProps {
   children: ReactNode;
 }
 
+const getNestedValue = (obj: Record<string, unknown>, key: string): unknown => {
+  const parts = key.split(".");
+  let value: unknown = obj;
+
+  for (const part of parts) {
+    if (typeof value === "object" && value !== null && part in value) {
+      value = (value as Record<string, unknown>)[part];
+    } else {
+      return undefined;
+    }
+  }
+
+  return value;
+};
+
 export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
   const [language, setLanguage] = useState<Language>("en");
 
   const t = (key: string): string => {
-    const keys = key.split(".");
-    let value: unknown = translations[language];
+    const value = getNestedValue(translations[language], key);
 
-    for (const k of keys) {
-      if (value && typeof value === "object" && k in value) {
-        value = (value as Record<string, unknown>)[k];
-      } else {
-        let fallbackValue: unknown = translations.en;
-        for (const fallbackKey of keys) {
-          if (
-            fallbackValue &&
-            typeof fallbackValue === "object" &&
-            fallbackKey in fallbackValue
-          ) {
-            fallbackValue = (fallbackValue as Record<string, unknown>)[
-              fallbackKey
-            ];
-          } else {
-            fallbackValue = key;
-            break;
-          }
-        }
-        value = fallbackValue;
-        break;
-      }
+    if (typeof value === "string") {
+      return value;
     }
 
-    return typeof value === "string" ? value : key;
-  };
+    const fallbackValue = getNestedValue(translations["en"], key);
+    if (typeof fallbackValue === "string") {
+      return fallbackValue;
+    }
 
-  const contextValue: I18nContextType = {
-    language,
-    setLanguage,
-    t,
+    return key;
   };
 
   return (
-    <I18nContext.Provider value={contextValue}>{children}</I18nContext.Provider>
+    <I18nContext.Provider value={{ language, setLanguage, t }}>
+      {children}
+    </I18nContext.Provider>
   );
 };

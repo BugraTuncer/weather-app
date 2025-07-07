@@ -66,7 +66,6 @@ export const en = {
     retry: "Retry",
   },
 
-  // Days
   days: {
     monday: "Mon",
     tuesday: "Tue",
@@ -77,7 +76,6 @@ export const en = {
     sunday: "Sun",
   },
 
-  // Months
   months: {
     january: "Jan",
     february: "Feb",

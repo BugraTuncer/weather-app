@@ -28,7 +28,6 @@
   transform: translateX(-2px);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .weather-detail-page {
     padding: 15px;

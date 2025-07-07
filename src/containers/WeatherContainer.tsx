@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
 import { useWeather } from "../hooks/useWeather";
 import { useI18n } from "../hooks/useI18n";
-import { LoadingSpinner } from "./LoadingSpinner";
-import { ErrorDisplay } from "./ErrorDisplay";
-import { EmptyState } from "./EmptyState";
-import { WeatherCard } from "./WeatherCard";
-import "../styles/WeatherDisplay.css";
 
-export const WeatherDisplay: React.FC = () => {
+import "../styles/WeatherDisplay.css";
+import { LoadingSpinner } from "../components/LoadingSpinner";
+import { ErrorDisplay } from "../components/ErrorDisplay";
+import { EmptyState } from "../components/EmptyState";
+import { WeatherCard } from "../components/WeatherCard";
+import { WeatherSearch } from "../components/WeatherSearch";
+
+export const WeatherContainer: React.FC = () => {
   const {
     currentWeather,
     isLoading,
@@ -64,14 +66,17 @@ export const WeatherDisplay: React.FC = () => {
 
   if (currentWeather) {
     return (
-      <div className="weather-display">
-        <WeatherCard
-          weather={currentWeather}
-          showRefreshButton={true}
-          onRefresh={handleRefreshLocation}
-          showLocation={true}
-          showDetails={true}
-        />
+      <div>
+        <WeatherSearch />
+        <div className="weather-display">
+          <WeatherCard
+            weather={currentWeather}
+            showRefreshButton={true}
+            onRefresh={handleRefreshLocation}
+            showLocation={true}
+            showDetails={true}
+          />
+        </div>
       </div>
     );
   }

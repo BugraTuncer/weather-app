@@ -1,16 +1,15 @@
 import React from "react";
-import { WeatherDisplay } from "../components/WeatherDisplay";
-import { WeatherForecast } from "../components/WeatherForecast";
-import { WeatherSearch } from "../components/WeatherSearch";
+
 import "../styles/HomePage.css";
+import { WeatherContainer } from "../containers/WeatherContainer";
+import { WeatherForecastContainer } from "../containers/WeatherForecastContainer";
 
 export const HomePage: React.FC = () => {
   return (
     <div className="home-page">
       <div className="home-container">
-        <WeatherSearch />
-        <WeatherDisplay />
-        <WeatherForecast />
+        <WeatherContainer />
+        <WeatherForecastContainer />
       </div>
     </div>
   );

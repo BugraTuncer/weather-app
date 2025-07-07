@@ -13,6 +13,8 @@ export const WeatherHeader: React.FC = () => {
     return null;
   }
 
+  console.log(currentWeather);
+
   return (
     <div className="weather-header">
       <div className="header-controls">

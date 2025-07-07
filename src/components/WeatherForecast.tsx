@@ -1,47 +1,19 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useWeather } from "../hooks/useWeather";
-import { useI18n } from "../hooks/useI18n";
 import { getWeatherIcon, formatTemperature } from "../utils/weatherUtils";
-import { LoadingSpinner } from "./LoadingSpinner";
-import { ErrorDisplay } from "./ErrorDisplay";
+import type { DailyForecast } from "../contexts/WeatherContextInstance";
 import "../styles/WeatherForecast.css";
 
-export const WeatherForecast: React.FC = () => {
-  const { forecast, isLoadingForecast, forecastError } = useWeather();
-  const { t } = useI18n();
-  const navigate = useNavigate();
+interface WeatherForecastProps {
+  forecast: DailyForecast[];
+  navigate: (path: string) => void;
+  t: (key: string) => string;
+}
 
-  if (isLoadingForecast) {
-    return (
-      <div className="weather-forecast">
-        <LoadingSpinner message={t("forecast.loadingForecast")} />
-      </div>
-    );
-  }
-
-  if (forecastError) {
-    return (
-      <div className="weather-forecast">
-        <ErrorDisplay
-          title={t("forecast.forecastUnavailable")}
-          message={forecastError.message}
-        />
-      </div>
-    );
-  }
-
-  if (!forecast || forecast.length === 0) {
-    return (
-      <div className="weather-forecast">
-        <div className="no-forecast">
-          <h3>{t("forecast.noForecastData")}</h3>
-          <p>{t("forecast.forecastWillAppear")}</p>
-        </div>
-      </div>
-    );
-  }
-
+export const WeatherForecast: React.FC<WeatherForecastProps> = ({
+  forecast,
+  navigate,
+  t,
+}) => {
   return (
     <div className="weather-forecast">
       <h2 className="forecast-title">{t("forecast.title")}</h2>

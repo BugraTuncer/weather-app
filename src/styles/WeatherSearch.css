@@ -71,7 +71,6 @@
   transform: none;
 }
 
-/* Dark theme support */
 @media (prefers-color-scheme: dark) {
   .search-input {
     --border-color: #404040;
@@ -129,7 +128,6 @@
   transform: none;
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
   .search-input-container {
     flex-direction: column;

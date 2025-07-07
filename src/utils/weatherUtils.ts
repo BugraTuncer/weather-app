@@ -1,4 +1,4 @@
-import type { WeatherData } from "../services/weatherApi";
+import type { WeatherData } from "../models/weatherDto";
 
 export const getWeatherIcon = (iconCode: string): string => {
   return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
@@ -20,8 +20,6 @@ export const formatWindSpeed = (speed: number): string => {
 };
 
 export const getWindDirection = (): string => {
-  // Since we don't have wind direction data in the current forecast structure,
-  // we'll return a generic direction indicator
   return "↗";
 };
 

@@ -6,7 +6,6 @@
   font-family: Roboto, sans-serif;
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
   .weather-display {
     min-height: 50vh;

@@ -1,10 +1,11 @@
 import React, { useState, useCallback, useMemo } from "react";
 import type { ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { weatherApi, type DailyForecast } from "../services/weatherApi";
+import { weatherApi } from "../services/weatherApi";
 import {
   WeatherContext,
   type WeatherContextType,
+  type DailyForecast,
 } from "./WeatherContextInstance";
 
 interface WeatherProviderProps {
@@ -32,9 +33,7 @@ export const WeatherProvider: React.FC<WeatherProviderProps> = ({
   const weatherQuery = useQuery({
     queryKey: ["weather", queryParams?.city, units],
     queryFn: () => {
-      if (!queryParams) {
-        throw new Error("No city specified");
-      }
+      if (!queryParams) throw new Error("No city specified");
       return weatherApi.getCurrentWeatherByCity(queryParams.city, units);
     },
     enabled: !!queryParams,
@@ -43,9 +42,7 @@ export const WeatherProvider: React.FC<WeatherProviderProps> = ({
   const weatherByCoordsQuery = useQuery({
     queryKey: ["weather", coordsParams?.lat, coordsParams?.lon, units],
     queryFn: () => {
-      if (!coordsParams) {
-        throw new Error("No coordinates specified");
-      }
+      if (!coordsParams) throw new Error("No coordinates specified");
       return weatherApi.getCurrentWeatherByCoords(
         coordsParams.lat,
         coordsParams.lon,
@@ -58,9 +55,7 @@ export const WeatherProvider: React.FC<WeatherProviderProps> = ({
   const forecastByCityQuery = useQuery({
     queryKey: ["forecast", queryParams?.city, units],
     queryFn: () => {
-      if (!queryParams) {
-        throw new Error("No city specified");
-      }
+      if (!queryParams) throw new Error("No city specified");
       return weatherApi.getForecastByCity(queryParams.city, units);
     },
     enabled: !!queryParams,
@@ -69,9 +64,7 @@ export const WeatherProvider: React.FC<WeatherProviderProps> = ({
   const forecastByCoordsQuery = useQuery({
     queryKey: ["forecast", coordsParams?.lat, coordsParams?.lon, units],
     queryFn: () => {
-      if (!coordsParams) {
-        throw new Error("No coordinates specified");
-      }
+      if (!coordsParams) throw new Error("No coordinates specified");
       return weatherApi.getForecastByCoords(
         coordsParams.lat,
         coordsParams.lon,
@@ -96,12 +89,12 @@ export const WeatherProvider: React.FC<WeatherProviderProps> = ({
           {
             enableHighAccuracy: true,
             timeout: 10000,
-            maximumAge: 300000, // 5 minutes
+            maximumAge: 300000,
           }
         );
       });
     },
-    enabled: false, // Don't run automatically
+    enabled: false,
     retry: false,
   });
 
@@ -109,7 +102,7 @@ export const WeatherProvider: React.FC<WeatherProviderProps> = ({
     (city: string, unitsParam?: "metric" | "imperial") => {
       const targetUnits = unitsParam || units;
       setQueryParams({ city, units: targetUnits });
-      setCoordsParams(null); // Clear coords query
+      setCoordsParams(null);
     },
     [units]
   );
@@ -146,27 +139,30 @@ export const WeatherProvider: React.FC<WeatherProviderProps> = ({
   }, [locationQuery]);
 
   const activeQuery = coordsParams ? weatherByCoordsQuery : weatherQuery;
-  const currentWeather = activeQuery.data || null;
-  const isLoading = activeQuery.isLoading;
-  const error = activeQuery.error;
-
   const activeForecastQuery = coordsParams
     ? forecastByCoordsQuery
     : forecastByCityQuery;
+
+  const currentWeather = activeQuery.data || null;
+  const isLoading = activeQuery.isLoading;
+  const error = activeQuery.error;
   const isLoadingForecast = activeForecastQuery.isLoading;
   const forecastError = activeForecastQuery.error;
 
   const forecast = useMemo(() => {
     if (!activeForecastQuery.data) return null;
 
-    const dailyData = new Map<string, DailyForecast>();
+    const dailyData: DailyForecast[] = [];
+    const processedDates = new Set<string>();
 
     activeForecastQuery.data.list.forEach((item) => {
       const date = new Date(item.dt * 1000);
       const dateKey = date.toISOString().split("T")[0];
 
-      if (!dailyData.has(dateKey)) {
-        dailyData.set(dateKey, {
+      if (!processedDates.has(dateKey)) {
+        processedDates.add(dateKey);
+
+        dailyData.push({
           date: dateKey,
           day: date.toLocaleDateString("en-US", { weekday: "short" }),
           temp_min: item.main.temp_min,
@@ -176,17 +172,23 @@ export const WeatherProvider: React.FC<WeatherProviderProps> = ({
           wind_speed: item.wind.speed,
         });
       } else {
-        const existing = dailyData.get(dateKey)!;
-        existing.temp_min = Math.min(existing.temp_min, item.main.temp_min);
-        existing.temp_max = Math.max(existing.temp_max, item.main.temp_max);
-        const hour = date.getHours();
-        if (hour >= 10 && hour <= 14) {
-          existing.weather = item.weather[0];
+        const existingIndex = dailyData.findIndex(
+          (day) => day.date === dateKey
+        );
+        if (existingIndex !== -1) {
+          const existing = dailyData[existingIndex];
+          existing.temp_min = Math.min(existing.temp_min, item.main.temp_min);
+          existing.temp_max = Math.max(existing.temp_max, item.main.temp_max);
+
+          const hour = date.getHours();
+          if (hour >= 10 && hour <= 14) {
+            existing.weather = item.weather[0];
+          }
         }
       }
     });
 
-    return Array.from(dailyData.values()).slice(0, 7);
+    return dailyData.slice(0, 7);
   }, [activeForecastQuery.data]);
 
   const contextValue: WeatherContextType = {

@@ -1,4 +1,3 @@
-// Re-export from contexts
 export {
   I18nProvider,
   type I18nContextType,
