@@ -8,7 +8,7 @@ import "../styles/WeatherForecast.css";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { ErrorDisplay } from "../components/ErrorDisplay";
 import { WeatherForecast } from "../components/WeatherForecast";
-import type { DailyForecast } from "../models/weatherDto";
+import type { WeatherData } from "../models/weatherDto";
 
 export const WeatherForecastContainer: React.FC = () => {
   const { queryParams, coordsParams, units } = useAppSelector(
@@ -46,7 +46,7 @@ export const WeatherForecastContainer: React.FC = () => {
   const forecast = useMemo(() => {
     if (!data) return null;
 
-    const dailyData: DailyForecast[] = [];
+    const dailyData: WeatherData[] = [];
     const processedDates: Record<string, boolean> = {};
 
     data.list.forEach((item) => {
@@ -59,11 +59,7 @@ export const WeatherForecastContainer: React.FC = () => {
         dailyData.push({
           date: dateKey,
           day: date.toLocaleDateString("en-US", { weekday: "short" }),
-          temp_min: item.main.temp_min,
-          temp_max: item.main.temp_max,
-          weather: item.weather[0],
-          humidity: item.main.humidity,
-          wind_speed: item.wind.speed,
+          ...item,
         });
       } else {
         const existingIndex = dailyData.findIndex(
@@ -71,13 +67,22 @@ export const WeatherForecastContainer: React.FC = () => {
         );
         if (existingIndex !== -1) {
           const existing = dailyData[existingIndex];
-          existing.temp_min = Math.min(existing.temp_min, item.main.temp_min);
-          existing.temp_max = Math.max(existing.temp_max, item.main.temp_max);
 
-          const hour = date.getHours();
-          if (hour >= 10 && hour <= 14) {
-            existing.weather = item.weather[0];
-          }
+          dailyData[existingIndex] = {
+            ...existing,
+            main: {
+              ...existing.main,
+              temp_min: Math.min(existing.main.temp_min, item.main.temp_min),
+              temp_max: Math.max(existing.main.temp_max, item.main.temp_max),
+            },
+            weather: (() => {
+              const hour = date.getHours();
+              if (hour >= 10 && hour <= 14) {
+                return item.weather;
+              }
+              return existing.weather;
+            })(),
+          };
         }
       }
     });

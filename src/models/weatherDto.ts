@@ -1,5 +1,5 @@
 export interface WeatherData {
-  coord: {
+  coord?: {
     lon: number;
     lat: number;
   };
@@ -9,21 +9,21 @@ export interface WeatherData {
     description: string;
     icon: string;
   }>;
-  base: string;
+  base?: string;
   main: {
     temp: number;
     feels_like: number;
     temp_min: number;
     temp_max: number;
-    pressure: number;
+    pressure?: number;
     humidity: number;
   };
   visibility: number;
   wind: {
     speed: number;
-    deg: number;
+    deg?: number;
   };
-  clouds: {
+  clouds?: {
     all: number;
   };
   dt: number;
@@ -38,13 +38,15 @@ export interface WeatherData {
   id: number;
   name: string;
   cod: number;
+  date?: string;
+  day?: string;
 }
 
 export interface ForecastData {
   cod: string;
   message: number;
   cnt: number;
-  list: ForecastItem[];
+  list: WeatherData[];
   city: {
     id: number;
     name: string;
@@ -57,50 +59,5 @@ export interface ForecastData {
     timezone: number;
     sunrise: number;
     sunset: number;
-  };
-}
-
-export interface ForecastItem {
-  dt: number;
-  main: {
-    temp: number;
-    feels_like: number;
-    temp_min: number;
-    temp_max: number;
-    pressure: number;
-    humidity: number;
-  };
-  weather: Array<{
-    id: number;
-    main: string;
-    description: string;
-    icon: string;
-  }>;
-  clouds: {
-    all: number;
-  };
-  wind: {
-    speed: number;
-    deg: number;
-  };
-  visibility: number;
-  pop: number;
-  sys: {
-    pod: string;
-  };
-  dt_txt: string;
-}
-export interface DailyForecast {
-  date: string;
-  day: string;
-  temp_min: number;
-  temp_max: number;
-  humidity: number;
-  wind_speed: number;
-  weather: {
-    id: number;
-    main: string;
-    description: string;
-    icon: string;
   };
 }

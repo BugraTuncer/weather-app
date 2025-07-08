@@ -18,6 +18,7 @@ interface WeatherCardProps {
   onRefresh?: () => void;
   showLocation?: boolean;
   showDetails?: boolean;
+  currentWeather?: WeatherData;
 }
 
 export const WeatherCard: React.FC<WeatherCardProps> = ({
@@ -26,6 +27,7 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({
   onRefresh,
   showLocation = true,
   showDetails = true,
+  currentWeather,
 }) => {
   const { t } = useI18n();
 
@@ -33,9 +35,22 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({
     <div className="weather-card">
       {showLocation && (
         <div className="location-section">
-          <h1 className="city-name">{weather.name}</h1>
-          <p className="country">{weather.sys.country}</p>
+          <h1 className="city-name">{weather.name.replace("Province", "")}</h1>
+          {weather.sys && <p className="country">{weather.sys.country}</p>}
         </div>
+      )}
+      {currentWeather && currentWeather.sys && (
+        <div className="location-section">
+          <h1 className="city-name">{currentWeather.name}</h1>
+          {currentWeather.sys && (
+            <p className="country">{currentWeather.sys.country}</p>
+          )}
+        </div>
+      )}
+      {weather.date && weather.day && (
+        <p className="date">
+          {weather.date} - {weather.day}
+        </p>
       )}
 
       <div className="weather-main">
@@ -43,10 +58,12 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({
           <div className="current-temp">
             {formatTemperature(weather.main.temp)}
           </div>
-          <div className="feels-like">
-            {t("weather.feelsLike")}{" "}
-            {formatTemperature(weather.main.feels_like)}
-          </div>
+          {weather.main.feels_like && (
+            <div className="feels-like">
+              {t("weather.feelsLike")}{" "}
+              {formatTemperature(weather.main.feels_like)}
+            </div>
+          )}
         </div>
 
         <div className="weather-icon-section">
@@ -77,18 +94,38 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({
               {formatWindSpeed(weather.wind.speed)}
             </span>
           </div>
-          <div className="detail-item">
-            <span className="detail-label">{t("weather.pressure")}</span>
-            <span className="detail-value">
-              {formatPressure(weather.main.pressure)}
-            </span>
-          </div>
-          <div className="detail-item">
-            <span className="detail-label">{t("weather.visibility")}</span>
-            <span className="detail-value">
-              {formatVisibility(weather.visibility)}
-            </span>
-          </div>
+          {weather.main.pressure && (
+            <div className="detail-item">
+              <span className="detail-label">{t("weather.pressure")}</span>
+              <span className="detail-value">
+                {formatPressure(weather.main.pressure)}
+              </span>
+            </div>
+          )}
+          {weather.visibility && (
+            <div className="detail-item">
+              <span className="detail-label">{t("weather.visibility")}</span>
+              <span className="detail-value">
+                {formatVisibility(weather.visibility)}
+              </span>
+            </div>
+          )}
+          {weather.main.temp_max && (
+            <div className="detail-item">
+              <span className="detail-label">{t("forecast.high")}</span>
+              <span className="detail-value">
+                {formatTemperature(weather.main.temp_max)}
+              </span>
+            </div>
+          )}
+          {weather.main.temp_min && (
+            <div className="detail-item">
+              <span className="detail-label">{t("forecast.low")}</span>
+              <span className="detail-value">
+                {formatTemperature(weather.main.temp_min)}
+              </span>
+            </div>
+          )}
         </div>
       )}
 

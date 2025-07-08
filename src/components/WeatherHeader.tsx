@@ -21,44 +21,38 @@ export const WeatherHeader: React.FC = () => {
     <div className="weather-header">
       <h1 className="header-title">Weather App</h1>
       <div className="header-controls">
-        <div className="language-toggle">
+        <div className="button-toggle">
           <button
-            className={`lang-btn ${language === "en" ? "active" : ""}`}
+            className={`btn ${language === "en" ? "active" : ""}`}
             onClick={() => dispatch(setLanguage("en"))}
           >
             EN
           </button>
           <button
-            className={`lang-btn ${language === "es" ? "active" : ""}`}
+            className={`btn ${language === "es" ? "active" : ""}`}
             onClick={() => dispatch(setLanguage("es"))}
           >
             ES
           </button>
         </div>
 
-        <div className="units-toggle">
+        <div className="button-toggle">
           <button
-            className={`unit-btn ${units === "metric" ? "active" : ""}`}
+            className={`btn ${units === "metric" ? "active" : ""}`}
             onClick={() => dispatch(setUnits("metric"))}
           >
             {t("header.units.celsius")}
           </button>
           <button
-            className={`unit-btn ${units === "imperial" ? "active" : ""}`}
+            className={`btn ${units === "imperial" ? "active" : ""}`}
             onClick={() => dispatch(setUnits("imperial"))}
           >
             {t("header.units.fahrenheit")}
           </button>
         </div>
 
-        <div className="theme-toggle">
-          <button
-            className="theme-btn"
-            onClick={() => dispatch(toggleDarkMode())}
-            aria-label={
-              !isDarkMode ? "Switch to dark mode" : "Switch to light mode"
-            }
-          >
+        <div className="button-toggle">
+          <button className="btn" onClick={() => dispatch(toggleDarkMode())}>
             {!isDarkMode ? "🌙" : "☀️"}
           </button>
         </div>

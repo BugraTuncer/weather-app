@@ -25,7 +25,7 @@ export const WeatherSearch: React.FC = () => {
 
   return (
     <div className="weather-search">
-      <form onSubmit={handleSearch} className="search-form">
+      <form onSubmit={handleSearch}>
         <div className="search-input-container">
           <input
             type="text"

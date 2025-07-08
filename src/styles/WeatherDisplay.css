@@ -4,35 +4,5 @@
   align-items: center;
   flex-direction: column;
   gap: 20px;
-  min-height: 60vh;
-  font-family: Roboto, sans-serif;
-}
-
-@media (min-width: 820px) and (max-width: 1180px) {
-  .weather-display {
-    min-height: 55vh;
-    padding: 0 20px;
-    gap: 25px;
-  }
-}
-
-@media (max-width: 768px) {
-  .weather-display {
-    min-height: 50vh;
-    padding: 0 15px;
-  }
-}
-
-@media (max-width: 480px) {
-  .weather-display {
-    min-height: 40vh;
-    padding: 0 10px;
-  }
-}
-
-@media (max-width: 360px) {
-  .weather-display {
-    min-height: 35vh;
-    padding: 0 5px;
-  }
+  margin-top: 40px;
 }

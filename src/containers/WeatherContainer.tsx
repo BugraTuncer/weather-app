@@ -133,7 +133,6 @@ export const WeatherContainer: React.FC = () => {
     return (
       <div className="weather-display">
         <WeatherSearch />
-
         <WeatherCard
           weather={currentWeather}
           showRefreshButton={true}

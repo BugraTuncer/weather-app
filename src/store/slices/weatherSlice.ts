@@ -4,6 +4,7 @@ import type { WeatherData } from "../../models/weatherDto";
 
 interface WeatherState {
   currentWeather: WeatherData | null;
+  selectedForecastDay: WeatherData | null;
   isLoading: boolean;
   error: string | null;
   units: "metric" | "imperial";
@@ -22,6 +23,7 @@ interface WeatherState {
 
 const initialState: WeatherState = {
   currentWeather: null,
+  selectedForecastDay: null,
   isLoading: false,
   error: null,
   units: "metric",
@@ -37,6 +39,13 @@ const weatherSlice = createSlice({
   reducers: {
     setCurrentWeather: (state, action: PayloadAction<WeatherData | null>) => {
       state.currentWeather = action.payload;
+    },
+
+    setSelectedForecastDay: (
+      state,
+      action: PayloadAction<WeatherData | null>
+    ) => {
+      state.selectedForecastDay = action.payload;
     },
 
     setUnits: (state, action: PayloadAction<"metric" | "imperial">) => {
@@ -70,6 +79,7 @@ const weatherSlice = createSlice({
 
     clearWeatherData: (state) => {
       state.currentWeather = null;
+      state.selectedForecastDay = null;
       state.error = null;
     },
   },
@@ -77,6 +87,7 @@ const weatherSlice = createSlice({
 
 export const {
   setCurrentWeather,
+  setSelectedForecastDay,
   setUnits,
   setQueryParams,
   setCoordsParams,

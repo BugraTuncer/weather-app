@@ -6,7 +6,6 @@ interface ErrorDisplayProps {
   message: string;
   onRetry?: () => void;
   retryButtonText?: string;
-  className?: string;
 }
 
 export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
@@ -14,10 +13,9 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
   message,
   onRetry,
   retryButtonText = "Try Again",
-  className = "",
 }) => {
   return (
-    <div className={`error-container ${className}`}>
+    <div className="error-container">
       <h2>{title}</h2>
       <p>{message}</p>
       {onRetry && (

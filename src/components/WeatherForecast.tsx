@@ -1,10 +1,12 @@
 import React from "react";
 import { getWeatherIcon, formatTemperature } from "../utils/weatherUtils";
 import "../styles/WeatherForecast.css";
-import type { DailyForecast } from "../models/weatherDto";
+import type { WeatherData } from "../models/weatherDto";
+import { useAppDispatch } from "../store/hooks";
+import { setSelectedForecastDay } from "../store/slices/weatherSlice";
 
 interface WeatherForecastProps {
-  forecast: DailyForecast[];
+  forecast: WeatherData[];
   navigate: (path: string) => void;
   t: (key: string) => string;
 }
@@ -14,8 +16,15 @@ export const WeatherForecast: React.FC<WeatherForecastProps> = ({
   navigate,
   t,
 }) => {
+  const dispatch = useAppDispatch();
+
+  const handleDayClick = (day: WeatherData) => {
+    dispatch(setSelectedForecastDay(day));
+    navigate(`/weather/${day.date}`);
+  };
+
   return (
-    <div className="weather-forecast">
+    <div>
       <h2 className="forecast-title">{t("forecast.title")}</h2>
 
       <div className="forecast-container">
@@ -23,13 +32,13 @@ export const WeatherForecast: React.FC<WeatherForecastProps> = ({
           {forecast.map((day) => (
             <div
               key={day.date}
-              className={`forecast-day clickable`}
-              onClick={() => navigate(`/weather/${day.date}`)}
+              className="forecast-day"
+              onClick={() => handleDayClick(day)}
             >
               <div className="day-info">
                 <div className="day-name">{day.day}</div>
                 <div className="day-date">
-                  {new Date(day.date).toLocaleDateString("en-US", {
+                  {new Date(day.date ?? "").toLocaleDateString("en-US", {
                     month: "short",
                     day: "numeric",
                   })}
@@ -38,16 +47,16 @@ export const WeatherForecast: React.FC<WeatherForecastProps> = ({
 
               <div className="day-weather">
                 <img
-                  src={getWeatherIcon(day.weather.icon)}
-                  alt={day.weather.description}
+                  src={getWeatherIcon(day.weather[0].icon)}
+                  alt={day.weather[0].description}
                   className="day-weather-icon"
                 />
                 <div className="day-temps">
                   <span className="temp-max">
-                    {formatTemperature(day.temp_max)}
+                    {formatTemperature(day.main.temp_max)}
                   </span>
                   <span className="temp-min">
-                    {formatTemperature(day.temp_min)}
+                    {formatTemperature(day.main.temp_min)}
                   </span>
                 </div>
               </div>

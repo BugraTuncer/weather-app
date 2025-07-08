@@ -6,7 +6,6 @@ interface EmptyStateProps {
   message: string;
   onAction?: () => void;
   actionButtonText?: string;
-  className?: string;
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
@@ -14,10 +13,9 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   message,
   onAction,
   actionButtonText = "Get Started",
-  className = "",
 }) => {
   return (
-    <div className={`no-data-container ${className}`}>
+    <div className="no-data-container">
       <h2>{title}</h2>
       <p>{message}</p>
       {onAction && (

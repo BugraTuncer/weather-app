@@ -1,7 +1,8 @@
 import "./styles/App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
-import { store } from "./store";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./store";
 import { WeatherHeader } from "./components/WeatherHeader";
 import { HomePage } from "./pages/HomePage";
 import { WeatherDetailPage } from "./pages/WeatherDetailPage";
@@ -24,7 +25,9 @@ function AppContent() {
 function App() {
   return (
     <Provider store={store}>
-      <AppContent />
+      <PersistGate loading={null} persistor={persistor}>
+        <AppContent />
+      </PersistGate>
     </Provider>
   );
 }

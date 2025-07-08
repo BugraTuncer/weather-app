@@ -1,16 +1,15 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useI18n } from "../hooks/useI18n";
-import { LoadingSpinner } from "../components/LoadingSpinner";
-import { ErrorDisplay } from "../components/ErrorDisplay";
 import { WeatherCard } from "../components/WeatherCard";
 import "../styles/WeatherDetailPage.css";
 import { useAppSelector } from "../store/hooks";
 
 export const WeatherDetailPage: React.FC = () => {
-  const { date } = useParams<{ date: string }>();
   const navigate = useNavigate();
-  const { currentWeather } = useAppSelector((state) => state.weather);
+  const { selectedForecastDay, currentWeather } = useAppSelector(
+    (state) => state.weather
+  );
 
   const { t } = useI18n();
 
@@ -26,13 +25,18 @@ export const WeatherDetailPage: React.FC = () => {
         </button>
       </div>
 
-      {currentWeather && (
+      {selectedForecastDay ? (
         <WeatherCard
-          weather={currentWeather}
+          weather={selectedForecastDay}
           showRefreshButton={false}
           showLocation={true}
           showDetails={true}
+          currentWeather={currentWeather ?? undefined}
         />
+      ) : (
+        <div className="no-data">
+          <p>{t("detail.noData")}</p>
+        </div>
       )}
     </div>
   );
