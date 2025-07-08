@@ -61,7 +61,9 @@ export const WeatherForecastContainer: React.FC = () => {
 
         dailyData.push({
           date: dateKey,
-          day: date.toLocaleDateString("en-US", { weekday: "short" }),
+          day: date.toLocaleDateString(language === "es" ? "es-ES" : "en-US", {
+            weekday: "short",
+          }),
           ...item,
         });
       } else {
@@ -91,7 +93,7 @@ export const WeatherForecastContainer: React.FC = () => {
     });
 
     return dailyData;
-  }, [data]);
+  }, [data, language]);
 
   if (isLoading) {
     return (

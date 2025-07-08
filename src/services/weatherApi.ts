@@ -28,7 +28,8 @@ export class WeatherApiService {
       });
       return response.data;
     } catch (error) {
-      throw new Error(`Failed to fetch weather data for ${city}: ${error}`);
+      console.log("error", error);
+      throw new Error(`Failed to fetch weather data for ${city}`);
     }
   }
 
@@ -50,8 +51,9 @@ export class WeatherApiService {
       });
       return response.data;
     } catch (error) {
+      console.log("error", error);
       throw new Error(
-        `Failed to fetch weather data for coordinates (${lat}, ${lon}): ${error}`
+        `Failed to fetch weather data for coordinates (${lat}, ${lon})`
       );
     }
   }
@@ -73,7 +75,8 @@ export class WeatherApiService {
       });
       return response.data;
     } catch (error) {
-      throw new Error(`Failed to fetch forecast data for ${city}: ${error}`);
+      console.log("error", error);
+      throw new Error(`Failed to fetch forecast data for ${city}`);
     }
   }
 
@@ -96,8 +99,9 @@ export class WeatherApiService {
       });
       return response.data;
     } catch (error) {
+      console.log("error", error);
       throw new Error(
-        `Failed to fetch forecast data for coordinates (${lat}, ${lon}): ${error}`
+        `Failed to fetch forecast data for coordinates (${lat}, ${lon})`
       );
     }
   }

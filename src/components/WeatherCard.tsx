@@ -30,18 +30,21 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({
   currentWeather,
 }) => {
   const { t } = useI18n();
-
   return (
     <div className="weather-card">
       {showLocation && (
         <div className="location-section">
-          <h1 className="city-name">{weather.name.replace("Province", "")}</h1>
+          <h1 className="city-name">
+            {weather?.name?.replace("Province", "")}
+          </h1>
           {weather.sys && <p className="country">{weather.sys.country}</p>}
         </div>
       )}
       {currentWeather && currentWeather.sys && (
         <div className="location-section">
-          <h1 className="city-name">{currentWeather.name}</h1>
+          <h1 className="city-name">
+            {currentWeather.name.replace("Province", "")}
+          </h1>
           {currentWeather.sys && (
             <p className="country">{currentWeather.sys.country}</p>
           )}
