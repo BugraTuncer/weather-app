@@ -39,8 +39,11 @@ export const WeatherForecastContainer: React.FC = () => {
       throw new Error("No location specified");
     },
     enabled: !!(queryParams || coordsParams),
-    retry: false,
-    staleTime: 1000 * 60 * 60 * 24,
+    retry: 3,
+    retryDelay: 1000,
+    refetchInterval: 1000 * 60 * 30,
+    refetchIntervalInBackground: true,
+    staleTime: 1000 * 60 * 30,
   });
 
   const forecast = useMemo(() => {
