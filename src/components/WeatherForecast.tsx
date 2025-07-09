@@ -1,6 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { getWeatherIcon, formatTemperature } from "../utils/weatherUtils";
+import {
+  getWeatherIcon,
+  formatTemperature,
+  celsiusToFahrenheit,
+} from "../utils/weatherUtils";
 import "../styles/WeatherForecast.css";
 import type { WeatherData } from "../models/weatherDto";
 import { useAppDispatch } from "../store/hooks";
@@ -90,10 +94,14 @@ export const WeatherForecast: React.FC<WeatherForecastProps> = ({
               <div className="day-weather">
                 <div className="day-temps">
                   <span className="temp-max">
-                    {formatTemperature(day.main.temp_max, unit)}
+                    {unit === "metric"
+                      ? formatTemperature(day.main.temp_max, unit)
+                      : celsiusToFahrenheit(day.main.temp_max)}
                   </span>
                   <span className="temp-min">
-                    {formatTemperature(day.main.temp_min, unit)}
+                    {unit === "metric"
+                      ? formatTemperature(day.main.temp_min, unit)
+                      : celsiusToFahrenheit(day.main.temp_min)}
                   </span>
                 </div>
               </div>

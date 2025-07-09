@@ -14,6 +14,7 @@
   --button-border: #e0e0e0;
   --card-bg: #ffffff;
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --error-color: #ef4444;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -33,6 +34,7 @@
   --button-border: #e0e0e0;
   --card-bg: #ffffff;
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --error-color: #ef4444;
 }
 
 [data-theme="dark"] {

@@ -10,22 +10,28 @@ import { LoadingSpinner } from "../components/LoadingSpinner";
 import { ErrorDisplay } from "../components/ErrorDisplay";
 import { WeatherForecast } from "../components/WeatherForecast";
 import type { WeatherData } from "../models/weatherDto";
+import { EmptyState } from "../components/EmptyState";
 
 export const WeatherForecastContainer: React.FC = () => {
-  const { queryParams, coordsParams, units } = useAppSelector(
-    (state) => state.weather
-  );
+  const { queryParams, coordsParams, units, currentWeather, savedWeathers } =
+    useAppSelector((state) => state.weather);
   const { t, language } = useI18n();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const savedWeatherData = useMemo(() => {
+    if (!currentWeather || !savedWeathers) return null;
+    return savedWeathers.find(
+      (saved) => saved.weather.id === currentWeather.id
+    );
+  }, [currentWeather, savedWeathers]);
+
   const { data, isLoading, error } = useQuery({
     queryKey: [
-      "forecast",
+      "forecastContainer",
       queryParams?.city,
       coordsParams?.lat,
       coordsParams?.lon,
-      units,
       language,
     ],
     queryFn: () => {
@@ -41,7 +47,7 @@ export const WeatherForecastContainer: React.FC = () => {
       }
       throw new Error("No location specified");
     },
-    enabled: !!(queryParams || coordsParams),
+    enabled: !!(queryParams || coordsParams) && !savedWeatherData?.forecast,
     retry: 3,
     retryDelay: 1000,
     refetchInterval: 1000 * 60 * 30,
@@ -50,6 +56,10 @@ export const WeatherForecastContainer: React.FC = () => {
   });
 
   const forecast = useMemo(() => {
+    if (savedWeatherData?.forecast) {
+      return savedWeatherData.forecast;
+    }
+
     if (!data) return null;
 
     const dailyData: WeatherData[] = [];
@@ -96,10 +106,31 @@ export const WeatherForecastContainer: React.FC = () => {
     });
 
     return dailyData;
-  }, [data, language]);
+  }, [data, language, savedWeatherData]);
 
   useEffect(() => {
-    if (data) {
+    if (savedWeatherData?.todayHourlyForecast) {
+      dispatch(setCurrentDayHourlyData(savedWeatherData.todayHourlyForecast));
+    } else if (savedWeatherData?.forecast) {
+      const today = new Date();
+      const todayKey = today.toISOString().split("T")[0];
+
+      const todayHourlyData = savedWeatherData.forecast
+        .filter((item) => {
+          const itemDate = new Date(item.dt * 1000);
+          const itemDateKey = itemDate.toISOString().split("T")[0];
+          return itemDateKey === todayKey;
+        })
+        .map((item) => ({
+          ...item,
+          date: todayKey,
+          day: today.toLocaleDateString(language === "es" ? "es-ES" : "en-US", {
+            weekday: "short",
+          }),
+        }));
+
+      dispatch(setCurrentDayHourlyData(todayHourlyData));
+    } else if (data) {
       const today = new Date();
       const todayKey = today.toISOString().split("T")[0];
 
@@ -119,9 +150,11 @@ export const WeatherForecastContainer: React.FC = () => {
 
       dispatch(setCurrentDayHourlyData(todayHourlyData));
     }
-  }, [data, language, dispatch]);
+  }, [data, language, dispatch, savedWeatherData]);
 
-  if (isLoading) {
+  const shouldShowLoading = isLoading && !savedWeatherData?.forecast;
+
+  if (shouldShowLoading) {
     return (
       <div className="weather-forecast">
         <LoadingSpinner message={t("forecast.loadingForecast")} />
@@ -129,7 +162,7 @@ export const WeatherForecastContainer: React.FC = () => {
     );
   }
 
-  if (error) {
+  if (error && !savedWeatherData?.forecast) {
     return (
       <div className="weather-forecast">
         <ErrorDisplay
@@ -142,13 +175,15 @@ export const WeatherForecastContainer: React.FC = () => {
     );
   }
 
-  if (!forecast || forecast.length === 0) {
+  if (!forecast || forecast.length === 0 || !currentWeather) {
     return (
-      <div className="weather-forecast">
-        <div className="no-forecast">
-          <h3>{t("forecast.noForecastData")}</h3>
-          <p>{t("forecast.forecastWillAppear")}</p>
-        </div>
+      <div className="weather-display">
+        <EmptyState
+          title={t("forecast.noForecastData")}
+          message={t("forecast.emptyForecastData")}
+          onAction={() => window.location.reload()}
+          actionButtonText={t("weather.tryAgain")}
+        />
       </div>
     );
   }

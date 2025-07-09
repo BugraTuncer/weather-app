@@ -7,15 +7,31 @@
 }
 
 .home-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: row;
-  gap: 80px;
+  display: grid;
+  grid-template-columns: 300px 1fr 1fr;
+  gap: 30px;
+}
+
+.saved-weathers-column {
+  min-width: 300px;
+}
+
+.weather-column {
+  flex: 1;
+}
+
+.forecast-column {
+  flex: 1;
 }
 @media (max-width: 768px) {
   .home-container {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .saved-weathers-column {
+    min-width: auto;
   }
   .home-page {
     padding: 0px;

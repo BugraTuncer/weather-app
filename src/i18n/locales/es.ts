@@ -5,7 +5,8 @@ export const es = {
     windSpeed: "Velocidad del Viento",
     pressure: "Presión",
     visibility: "Visibilidad",
-    refreshWeather: "Actualizar Clima",
+    save: "Guardar Clima",
+    saved: "Guardado",
     getMyLocationWeather: "Obtener Clima de Mi Ubicación",
     weatherInformation: "Información del Clima",
     clickToGetWeather:
@@ -15,6 +16,13 @@ export const es = {
       "No se pudo obtener tu ubicación. Por favor permite el acceso a la ubicación o intenta de nuevo.",
     tryAgain: "Intentar de Nuevo",
     loadingWeatherData: "Cargando datos del clima...",
+  },
+
+  savedWeathers: {
+    title: "Climas Guardados",
+    empty: "Aún no hay climas guardados. ¡Busca una ciudad y guárdala!",
+    remove: "Eliminar de guardados",
+    refreshAll: "Actualizar todos los climas guardados",
   },
 
   search: {
@@ -35,6 +43,7 @@ export const es = {
     high: "Máx",
     low: "Mín",
     todayForecast: "Pronóstico de Hoy",
+    emptyForecastData: "No hay datos de pronóstico disponibles",
   },
 
   detail: {

@@ -6,6 +6,10 @@ import { weatherApi } from "../services/weatherApi";
 import {
   setCurrentWeather,
   setCoordsParams,
+  addSavedWeather,
+  removeSavedWeather,
+  setCurrentDayHourlyData,
+  setQueryParams,
 } from "../store/slices/weatherSlice";
 
 import "../styles/WeatherDisplay.css";
@@ -18,6 +22,7 @@ import {
   getWeatherDescription,
   getWeatherIcon,
 } from "../utils/weatherUtils";
+import type { WeatherData } from "../models/weatherDto";
 
 export const WeatherContainer: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -27,6 +32,7 @@ export const WeatherContainer: React.FC = () => {
     queryParams,
     units,
     currentDayHourlyData,
+    savedWeathers,
   } = useAppSelector((state) => state.weather);
   const { t, language } = useI18n();
 
@@ -81,6 +87,36 @@ export const WeatherContainer: React.FC = () => {
     staleTime: 1000 * 60 * 30,
   });
 
+  const { data: forecastData } = useQuery({
+    queryKey: [
+      "forecastWeatherContainer",
+      queryParams?.city,
+      coordsParams?.lat,
+      coordsParams?.lon,
+      units,
+      language,
+    ],
+    queryFn: () => {
+      if (queryParams) {
+        return weatherApi.getForecastByCity(queryParams.city, units, language);
+      } else if (coordsParams) {
+        return weatherApi.getForecastByCoords(
+          coordsParams.lat,
+          coordsParams.lon,
+          units,
+          language
+        );
+      }
+      throw new Error("No location specified");
+    },
+    enabled: !!(queryParams || coordsParams),
+    retry: 3,
+    retryDelay: 1000,
+    refetchInterval: 1000 * 60 * 30,
+    refetchIntervalInBackground: true,
+    staleTime: 1000 * 60 * 30,
+  });
+
   const activeData = coordsParams ? weatherByCoordsData : weatherByCityData;
   const activeLoading = coordsParams
     ? weatherByCoordsLoading
@@ -110,12 +146,152 @@ export const WeatherContainer: React.FC = () => {
   }, [units, dispatch]);
 
   useEffect(() => {
+    if (coordsParams) {
+      dispatch(setQueryParams(null));
+    }
+  }, [coordsParams, dispatch]);
+
+  useEffect(() => {
     if (activeData) {
       dispatch(setCurrentWeather(activeData));
+      dispatch(setCurrentDayHourlyData(null));
     }
   }, [activeData, dispatch]);
 
-  console.log("current", currentDayHourlyData);
+  useEffect(() => {
+    if (forecastData) {
+      const today = new Date();
+      const todayKey = today.toISOString().split("T")[0];
+
+      const todayHourlyData = forecastData.list
+        .filter((item) => {
+          const itemDate = new Date(item.dt * 1000);
+          const itemDateKey = itemDate.toISOString().split("T")[0];
+          return itemDateKey === todayKey;
+        })
+        .map((item) => ({
+          ...item,
+          date: todayKey,
+          day: today.toLocaleDateString(language === "es" ? "es-ES" : "en-US", {
+            weekday: "short",
+          }),
+        }));
+
+      dispatch(setCurrentDayHourlyData(todayHourlyData));
+    } else {
+      dispatch(setCurrentDayHourlyData(null));
+    }
+  }, [forecastData, language, dispatch]);
+
+  const handleSaveWeather = async () => {
+    if (currentWeather) {
+      const currentSavedWeathers = savedWeathers || [];
+      const isAlreadySaved = currentSavedWeathers.some(
+        (saved) => saved.weather.id === currentWeather.id
+      );
+
+      if (isAlreadySaved) {
+        dispatch(removeSavedWeather(currentWeather.id));
+      } else {
+        try {
+          let forecast = null;
+
+          if (coordsParams) {
+            forecast = await weatherApi.getForecastByCoords(
+              coordsParams.lat,
+              coordsParams.lon,
+              units,
+              language
+            );
+          } else if (queryParams) {
+            forecast = await weatherApi.getForecastByCity(
+              queryParams.city,
+              units,
+              language
+            );
+          }
+
+          let processedForecast = null;
+          if (forecast) {
+            const dailyData: WeatherData[] = [];
+            const processedDates: Record<string, boolean> = {};
+
+            forecast.list.forEach((item: WeatherData) => {
+              const date = new Date(item.dt * 1000);
+              const [dateKey] = date.toISOString().split("T");
+
+              if (!processedDates[dateKey]) {
+                processedDates[dateKey] = true;
+
+                dailyData.push({
+                  date: dateKey,
+                  day: date.toLocaleDateString(
+                    language === "es" ? "es-ES" : "en-US",
+                    {
+                      weekday: "short",
+                    }
+                  ),
+                  ...item,
+                });
+              } else {
+                const existingIndex = dailyData.findIndex(
+                  (day) => day.date === dateKey
+                );
+                if (existingIndex !== -1) {
+                  const existing = dailyData[existingIndex];
+
+                  dailyData[existingIndex] = {
+                    ...existing,
+                    main: {
+                      ...existing.main,
+                      temp_min: Math.min(
+                        existing.main.temp_min,
+                        item.main.temp_min
+                      ),
+                      temp_max: Math.max(
+                        existing.main.temp_max,
+                        item.main.temp_max
+                      ),
+                    },
+                    weather: (() => {
+                      const hour = date.getHours();
+                      if (hour >= 10 && hour <= 14) {
+                        return item.weather;
+                      }
+                      return existing.weather;
+                    })(),
+                  };
+                }
+              }
+            });
+
+            processedForecast = dailyData;
+          }
+
+          dispatch(
+            addSavedWeather({
+              weather: currentWeather,
+              forecast: processedForecast,
+              todayHourlyForecast: currentDayHourlyData,
+            })
+          );
+        } catch (error) {
+          console.error("Error fetching forecast for saved weather:", error);
+          dispatch(
+            addSavedWeather({
+              weather: currentWeather,
+              forecast: null,
+              todayHourlyForecast: currentDayHourlyData,
+            })
+          );
+        }
+      }
+    }
+  };
+
+  const isWeatherSaved =
+    savedWeathers?.some((saved) => saved.weather.id === currentWeather?.id) ||
+    false;
 
   if (activeLoading) {
     return (
@@ -143,7 +319,7 @@ export const WeatherContainer: React.FC = () => {
       <div className="weather-display">
         <EmptyState
           title={t("weather.weatherInformation")}
-          message={t("weather.unableToGetLocation")}
+          message={t("weather.emptyWeather")}
           onAction={() => window.location.reload()}
           actionButtonText={t("weather.tryAgain")}
         />
@@ -188,6 +364,9 @@ export const WeatherContainer: React.FC = () => {
           showDetails={true}
           todayForecast={<TodayForecast />}
           unit={units}
+          showSaveButton={true}
+          onSave={handleSaveWeather}
+          isSaved={isWeatherSaved}
         />
       </div>
     );

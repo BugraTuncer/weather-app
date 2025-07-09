@@ -12,6 +12,7 @@ const weatherPersistConfig = {
     "currentWeather",
     "units",
     "currentDayHourlyData",
+    "savedWeathers",
   ],
 };
 

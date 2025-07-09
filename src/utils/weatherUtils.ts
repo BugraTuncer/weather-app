@@ -38,3 +38,11 @@ export const formatPressure = (pressure: number): string => {
 export const formatHumidity = (humidity: number): string => {
   return `${humidity}%`;
 };
+
+export function celsiusToFahrenheit(celsius: number): string {
+  return `${((celsius * 9) / 5 + 32).toFixed(0)}°F`;
+}
+
+export function fahrenheitToCelsius(fahrenheit: number): string {
+  return `${(((fahrenheit - 32) * 5) / 9).toFixed(0)}°C`;
+}

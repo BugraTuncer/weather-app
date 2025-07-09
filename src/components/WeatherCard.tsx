@@ -21,17 +21,21 @@ interface WeatherCardProps {
   currentWeather?: WeatherData;
   todayForecast?: React.ReactNode;
   unit: string;
+  showSaveButton?: boolean;
+  onSave?: () => void;
+  isSaved?: boolean;
 }
 
 export const WeatherCard: React.FC<WeatherCardProps> = ({
   weather,
-  showRefreshButton = false,
-  onRefresh,
   showLocation = true,
   showDetails = true,
   currentWeather,
   todayForecast,
   unit,
+  showSaveButton = false,
+  onSave,
+  isSaved = false,
 }) => {
   const { t } = useI18n();
   return (
@@ -142,11 +146,16 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({
           </div>
         )}
 
-        {showRefreshButton && onRefresh && (
-          <button onClick={onRefresh} className="refresh-button">
-            {t("weather.refreshWeather")}
-          </button>
-        )}
+        <div className="weather-actions">
+          {showSaveButton && onSave && (
+            <button
+              onClick={onSave}
+              className={`save-button ${isSaved ? "saved" : ""}`}
+            >
+              {isSaved ? t("weather.saved") : t("weather.save")}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

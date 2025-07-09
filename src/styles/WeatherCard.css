@@ -114,6 +114,37 @@
   background: var(--accent-hover);
 }
 
+.weather-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.save-button {
+  flex: 1;
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.save-button:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+}
+
+.save-button.saved {
+  background: #10b981;
+}
+
+.save-button.saved:hover {
+  background: #059669;
+}
+
 .date {
   font-size: 1.2rem;
   color: var(--text-secondary);

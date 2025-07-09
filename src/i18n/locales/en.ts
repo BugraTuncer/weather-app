@@ -5,16 +5,23 @@ export const en = {
     windSpeed: "Wind Speed",
     pressure: "Pressure",
     visibility: "Visibility",
-    refreshWeather: "Refresh Weather",
+    save: "Save Weather",
+    saved: "Saved",
     getMyLocationWeather: "Get My Location Weather",
     weatherInformation: "Weather Information",
     clickToGetWeather:
       "Click the button below to get weather for your current location.",
     weatherDataUnavailable: "Weather Data Unavailable",
-    unableToGetLocation:
-      "Unable to get your location. Please allow location access or try again.",
     tryAgain: "Try Again",
     loadingWeatherData: "Loading weather data...",
+    emptyWeather: "No weather data available",
+  },
+
+  savedWeathers: {
+    title: "Saved Weathers",
+    empty: "No saved weathers yet. Search for a city and save it",
+    remove: "Remove from saved",
+    refreshAll: "Refresh all saved weathers",
   },
 
   search: {
@@ -35,6 +42,7 @@ export const en = {
     high: "High",
     low: "Low",
     todayForecast: "Today's Forecast",
+    emptyForecastData: "No forecast data available",
   },
 
   detail: {

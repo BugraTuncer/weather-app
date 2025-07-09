@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
-
 import "../styles/HomePage.css";
+import { WeatherSearch } from "../components/WeatherSearch";
+import { SavedWeathersList } from "../components/SavedWeathersList";
 import { WeatherContainer } from "../containers/WeatherContainer";
 import { WeatherForecastContainer } from "../containers/WeatherForecastContainer";
-import { WeatherSearch } from "../components/WeatherSearch";
 
 export const HomePage: React.FC = () => {
   useEffect(() => {
@@ -36,6 +36,9 @@ export const HomePage: React.FC = () => {
       </motion.div>
 
       <div className="home-container">
+        <div className="saved-weathers-column">
+          <SavedWeathersList />
+        </div>
         <div className="weather-column">
           <WeatherContainer />
         </div>
