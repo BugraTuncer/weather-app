@@ -66,10 +66,13 @@
 
 @media (max-width: 768px) {
   .header-title {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .btn {
-    font-size: 0.8rem;
+    font-size: 0.6rem;
+  }
+  .header-controls {
+    gap: 5px;
   }
 }

@@ -161,7 +161,7 @@
   color: #fff;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 840px) {
   .saved-weathers-list {
     margin-bottom: 16px;
     padding: 16px;
