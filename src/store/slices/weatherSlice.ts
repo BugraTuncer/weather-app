@@ -6,6 +6,7 @@ interface SavedWeather {
   weather: WeatherData;
   forecast: WeatherData[] | null;
   todayHourlyForecast: WeatherData[] | null;
+  units: "metric" | "imperial";
 }
 
 interface WeatherState {
@@ -65,10 +66,6 @@ const weatherSlice = createSlice({
       state.currentDayHourlyData = action.payload;
     },
 
-    setSavedWeathers: (state, action: PayloadAction<SavedWeather[] | null>) => {
-      state.savedWeathers = action.payload;
-    },
-
     addSavedWeather: (state, action: PayloadAction<SavedWeather>) => {
       const currentSaved = state.savedWeathers || [];
       const isAlreadySaved = currentSaved.some(
@@ -85,21 +82,6 @@ const weatherSlice = createSlice({
         state.savedWeathers = state.savedWeathers.filter(
           (saved) => saved.weather.id !== action.payload
         );
-      }
-    },
-
-    updateSavedWeatherForecast: (
-      state,
-      action: PayloadAction<{ weatherId: number; forecast: WeatherData[] }>
-    ) => {
-      if (state.savedWeathers) {
-        const index = state.savedWeathers.findIndex(
-          (saved) => saved.weather.id === action.payload.weatherId
-        );
-
-        if (index !== -1) {
-          state.savedWeathers[index].forecast = action.payload.forecast;
-        }
       }
     },
 
@@ -148,10 +130,8 @@ export const {
   setQueryParams,
   setCoordsParams,
   clearWeatherData,
-  setSavedWeathers,
   addSavedWeather,
   removeSavedWeather,
-  updateSavedWeatherForecast,
 } = weatherSlice.actions;
 
 export default weatherSlice.reducer;

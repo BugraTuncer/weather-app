@@ -5,7 +5,11 @@ import {
   setCurrentWeather,
   removeSavedWeather,
 } from "../store/slices/weatherSlice";
-import { celsiusToFahrenheit, formatTemperature } from "../utils/weatherUtils";
+import {
+  celsiusToFahrenheit,
+  fahrenheitToCelsius,
+  formatTemperature,
+} from "../utils/weatherUtils";
 import { getWeatherIcon } from "../utils/weatherUtils";
 import "../styles/SavedWeathersList.css";
 import type { WeatherData } from "../models/weatherDto";
@@ -21,20 +25,17 @@ const SavedWeathersListComponent: React.FC = () => {
 
   const weatherItems = useMemo(() => {
     if (!savedWeathers || savedWeathers.length === 0) return [];
-
     return savedWeathers.map((savedWeather) => ({
       ...savedWeather.weather,
-      formattedTemp: formatTemperature(
-        savedWeather?.weather?.main?.temp,
-        units
-      ),
+      formattedTemp: savedWeather.weather.main.temp,
+      units: savedWeather.units,
       weatherIcon:
         savedWeather?.weather?.weather?.length > 0 &&
         savedWeather?.weather?.weather[0]?.icon
           ? getWeatherIcon(savedWeather?.weather?.weather[0].icon)
           : null,
     }));
-  }, [savedWeathers, units]);
+  }, [savedWeathers]);
 
   const handleWeatherClick = (weather: WeatherData) => {
     dispatch(setCurrentWeather(weather));
@@ -75,10 +76,15 @@ const SavedWeathersListComponent: React.FC = () => {
                   {weather.name?.replace("Province", "")}
                 </h4>
                 <p className="saved-country">{weather.sys?.country}</p>
+
                 <div className="saved-temperature">
-                  {units === "metric"
-                    ? weather.formattedTemp
-                    : celsiusToFahrenheit(parseFloat(weather.formattedTemp))}
+                  {weather.units === "imperial" && units === "imperial"
+                    ? formatTemperature(weather.formattedTemp, units)
+                    : weather.units === "imperial" && units === "metric"
+                    ? fahrenheitToCelsius(weather.formattedTemp)
+                    : weather.units === "metric" && units === "imperial"
+                    ? celsiusToFahrenheit(weather.formattedTemp)
+                    : formatTemperature(weather.formattedTemp, units)}
                 </div>
               </div>
               <div className="saved-weather-icon">

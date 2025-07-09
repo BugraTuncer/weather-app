@@ -32,6 +32,7 @@ export const WeatherForecastContainer: React.FC = () => {
       queryParams?.city,
       coordsParams?.lat,
       coordsParams?.lon,
+      units,
       language,
     ],
     queryFn: () => {
@@ -52,7 +53,6 @@ export const WeatherForecastContainer: React.FC = () => {
     retryDelay: 1000,
     refetchInterval: 1000 * 60 * 30,
     refetchIntervalInBackground: true,
-    staleTime: 1000 * 60 * 30,
   });
 
   const forecast = useMemo(() => {
@@ -146,11 +146,12 @@ export const WeatherForecastContainer: React.FC = () => {
           day: today.toLocaleDateString(language === "es" ? "es-ES" : "en-US", {
             weekday: "short",
           }),
+          units: units,
         }));
 
       dispatch(setCurrentDayHourlyData(todayHourlyData));
     }
-  }, [data, language, dispatch, savedWeatherData]);
+  }, [data, language, dispatch, savedWeatherData, units]);
 
   const shouldShowLoading = isLoading && !savedWeatherData?.forecast;
 
@@ -194,6 +195,7 @@ export const WeatherForecastContainer: React.FC = () => {
       navigate={navigate}
       t={t}
       unit={units}
+      forecastUnits={savedWeatherData?.units || units}
     />
   );
 };

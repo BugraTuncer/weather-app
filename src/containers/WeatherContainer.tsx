@@ -18,6 +18,8 @@ import { ErrorDisplay } from "../components/ErrorDisplay";
 import { EmptyState } from "../components/EmptyState";
 import { WeatherCard } from "../components/WeatherCard";
 import {
+  celsiusToFahrenheit,
+  fahrenheitToCelsius,
   formatTemperature,
   getWeatherDescription,
   getWeatherIcon,
@@ -172,6 +174,7 @@ export const WeatherContainer: React.FC = () => {
         .map((item) => ({
           ...item,
           date: todayKey,
+          units: units,
           day: today.toLocaleDateString(language === "es" ? "es-ES" : "en-US", {
             weekday: "short",
           }),
@@ -181,7 +184,7 @@ export const WeatherContainer: React.FC = () => {
     } else {
       dispatch(setCurrentDayHourlyData(null));
     }
-  }, [forecastData, language, dispatch]);
+  }, [forecastData, language, dispatch, units]);
 
   const handleSaveWeather = async () => {
     if (currentWeather) {
@@ -273,6 +276,7 @@ export const WeatherContainer: React.FC = () => {
               weather: currentWeather,
               forecast: processedForecast,
               todayHourlyForecast: currentDayHourlyData,
+              units: units,
             })
           );
         } catch (error) {
@@ -282,6 +286,7 @@ export const WeatherContainer: React.FC = () => {
               weather: currentWeather,
               forecast: null,
               todayHourlyForecast: currentDayHourlyData,
+              units: units,
             })
           );
         }
@@ -345,7 +350,15 @@ export const WeatherContainer: React.FC = () => {
                 alt={getWeatherDescription(hour)}
                 className="current-weather-icon"
               />
-              <p>{formatTemperature(hour.main.temp, units)}</p>
+              <p>
+                {hour.units === "imperial" && units === "imperial"
+                  ? formatTemperature(hour.main.temp, units)
+                  : hour.units === "imperial" && units === "metric"
+                  ? fahrenheitToCelsius(hour.main.temp)
+                  : hour.units === "metric" && units === "imperial"
+                  ? celsiusToFahrenheit(hour.main.temp)
+                  : formatTemperature(hour.main.temp, units)}
+              </p>
             </div>
           ))}
         </div>

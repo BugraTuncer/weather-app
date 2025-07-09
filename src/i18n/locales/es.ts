@@ -16,6 +16,15 @@ export const es = {
       "No se pudo obtener tu ubicación. Por favor permite el acceso a la ubicación o intenta de nuevo.",
     tryAgain: "Intentar de Nuevo",
     loadingWeatherData: "Cargando datos del clima...",
+    clearsky: "Cielo despejado",
+    fewclouds: "Pocas nubes",
+    scatteredclouds: "Nubes dispersas",
+    brokenclouds: "Nubes rotas",
+    showerrain: "Chubascos",
+    rain: "Lluvia",
+    thunderstorm: "Tormenta",
+    snow: "Nieve",
+    mist: "Niebla",
   },
 
   savedWeathers: {

@@ -15,6 +15,18 @@ export const en = {
     tryAgain: "Try Again",
     loadingWeatherData: "Loading weather data...",
     emptyWeather: "No weather data available",
+    clearsky: "Clear Sky",
+    fewclouds: "Few Clouds",
+    scatteredclouds: "Scattered Clouds",
+    brokenclouds: "Broken Clouds",
+    overcastclouds: "Overcast Clouds",
+    lightrain: "Light Rain",
+    moderateRain: "Moderate Rain",
+    showerrain: "Shower Rain",
+    rain: "Rain",
+    thunderstorm: "Thunderstorm",
+    snow: "Snow",
+    mist: "Mist",
   },
 
   savedWeathers: {

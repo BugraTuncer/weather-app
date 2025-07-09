@@ -41,6 +41,7 @@ export interface WeatherData {
   cod: number;
   date?: string;
   day?: string;
+  units?: string;
 }
 
 export interface ForecastData {

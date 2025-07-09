@@ -4,6 +4,7 @@ import {
   getWeatherIcon,
   formatTemperature,
   celsiusToFahrenheit,
+  fahrenheitToCelsius,
 } from "../utils/weatherUtils";
 import "../styles/WeatherForecast.css";
 import type { WeatherData } from "../models/weatherDto";
@@ -15,6 +16,7 @@ interface WeatherForecastProps {
   navigate: (path: string) => void;
   t: (key: string) => string;
   unit: string;
+  forecastUnits: string;
 }
 
 export const WeatherForecast: React.FC<WeatherForecastProps> = ({
@@ -22,6 +24,7 @@ export const WeatherForecast: React.FC<WeatherForecastProps> = ({
   navigate,
   t,
   unit,
+  forecastUnits,
 }) => {
   const dispatch = useAppDispatch();
 
@@ -86,22 +89,29 @@ export const WeatherForecast: React.FC<WeatherForecastProps> = ({
                   className="day-weather-icon"
                 />
                 <div>
-                  {day.weather[0].description.charAt(0).toUpperCase() +
-                    day.weather[0].description.slice(1)}
+                  {t(`weather.${day.weather[0].description.replace(" ", "")}`)}
                 </div>
               </div>
 
               <div className="day-weather">
                 <div className="day-temps">
                   <span className="temp-max">
-                    {unit === "metric"
+                    {forecastUnits === "imperial" && unit === "imperial"
                       ? formatTemperature(day.main.temp_max, unit)
-                      : celsiusToFahrenheit(day.main.temp_max)}
+                      : forecastUnits === "imperial" && unit === "metric"
+                      ? fahrenheitToCelsius(day.main.temp_max)
+                      : forecastUnits === "metric" && unit === "imperial"
+                      ? celsiusToFahrenheit(day.main.temp_max)
+                      : formatTemperature(day.main.temp_max, unit)}
                   </span>
                   <span className="temp-min">
-                    {unit === "metric"
+                    {forecastUnits === "imperial" && unit === "imperial"
                       ? formatTemperature(day.main.temp_min, unit)
-                      : celsiusToFahrenheit(day.main.temp_min)}
+                      : forecastUnits === "imperial" && unit === "metric"
+                      ? fahrenheitToCelsius(day.main.temp_min)
+                      : forecastUnits === "metric" && unit === "imperial"
+                      ? celsiusToFahrenheit(day.main.temp_min)
+                      : formatTemperature(day.main.temp_min, unit)}
                   </span>
                 </div>
               </div>
