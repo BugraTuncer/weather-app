@@ -2,7 +2,6 @@
   margin-bottom: 2rem;
   width: 100%;
   max-width: 500px;
-  margin: 0 auto;
 }
 
 .search-input-container {
@@ -17,7 +16,7 @@
   border: 2px solid var(--border-color, #e1e5e9);
   border-radius: 8px;
   font-size: 1rem;
-  background-color: var(--input-bg, #ffffff);
+  background-color: var(--input-bg);
 }
 
 .search-input:focus {

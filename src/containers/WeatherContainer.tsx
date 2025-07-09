@@ -13,13 +13,17 @@ import { LoadingSpinner } from "../components/LoadingSpinner";
 import { ErrorDisplay } from "../components/ErrorDisplay";
 import { EmptyState } from "../components/EmptyState";
 import { WeatherCard } from "../components/WeatherCard";
-import { WeatherSearch } from "../components/WeatherSearch";
+import { getWeatherDescription, getWeatherIcon } from "../utils/weatherUtils";
 
 export const WeatherContainer: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { currentWeather, coordsParams, queryParams, units } = useAppSelector(
-    (state) => state.weather
-  );
+  const {
+    currentWeather,
+    coordsParams,
+    queryParams,
+    units,
+    currentDayHourlyData,
+  } = useAppSelector((state) => state.weather);
   const { t, language } = useI18n();
 
   const {
@@ -101,6 +105,8 @@ export const WeatherContainer: React.FC = () => {
     }
   }, [activeData, dispatch]);
 
+  console.log("current", currentDayHourlyData);
+
   if (activeLoading) {
     return (
       <div className="weather-display">
@@ -135,16 +141,42 @@ export const WeatherContainer: React.FC = () => {
     );
   }
 
+  const TodayForecast = () => {
+    return (
+      <div className="today-forecast">
+        <div className="today-forecast-header">
+          <h2>Today's Forecast</h2>
+        </div>
+        <div className="today-forecast-content">
+          {currentDayHourlyData?.map((hour) => (
+            <div key={hour.dt_txt}>
+              <h3>
+                {hour.dt_txt.split(" ")[1].split(":")[0]}:
+                {hour.dt_txt.split(" ")[1].split(":")[1]}
+              </h3>
+              <img
+                src={getWeatherIcon(hour.weather[0].icon)}
+                alt={getWeatherDescription(hour)}
+                className="current-weather-icon"
+              />
+              <p>{hour.main.temp}°C</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   if (currentWeather) {
     return (
       <div className="weather-display">
-        <WeatherSearch />
         <WeatherCard
           weather={currentWeather}
           showRefreshButton={true}
           onRefresh={() => window.location.reload()}
           showLocation={true}
           showDetails={true}
+          todayForecast={<TodayForecast />}
         />
       </div>
     );

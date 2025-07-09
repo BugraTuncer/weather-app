@@ -1,9 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { useAppSelector } from "../store/hooks";
+import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { useI18n } from "../hooks/useI18n";
 import { weatherApi } from "../services/weatherApi";
+import { setCurrentDayHourlyData } from "../store/slices/weatherSlice";
 import "../styles/WeatherForecast.css";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { ErrorDisplay } from "../components/ErrorDisplay";
@@ -16,6 +17,7 @@ export const WeatherForecastContainer: React.FC = () => {
   );
   const { t, language } = useI18n();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const { data, isLoading, error } = useQuery({
     queryKey: [
@@ -94,6 +96,29 @@ export const WeatherForecastContainer: React.FC = () => {
 
     return dailyData;
   }, [data, language]);
+
+  useEffect(() => {
+    if (data) {
+      const today = new Date();
+      const todayKey = today.toISOString().split("T")[0];
+
+      const todayHourlyData = data.list
+        .filter((item) => {
+          const itemDate = new Date(item.dt * 1000);
+          const itemDateKey = itemDate.toISOString().split("T")[0];
+          return itemDateKey === todayKey;
+        })
+        .map((item) => ({
+          ...item,
+          date: todayKey,
+          day: today.toLocaleDateString(language === "es" ? "es-ES" : "en-US", {
+            weekday: "short",
+          }),
+        }));
+
+      dispatch(setCurrentDayHourlyData(todayHourlyData));
+    }
+  }, [data, language, dispatch]);
 
   if (isLoading) {
     return (

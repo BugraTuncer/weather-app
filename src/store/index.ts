@@ -7,7 +7,12 @@ import uiReducer from "./slices/uiSlice";
 const weatherPersistConfig = {
   key: "weather",
   storage,
-  whitelist: ["selectedForecastDay", "currentWeather", "units"],
+  whitelist: [
+    "selectedForecastDay",
+    "currentWeather",
+    "units",
+    "currentDayHourlyData",
+  ],
 };
 
 const uiPersistConfig = {

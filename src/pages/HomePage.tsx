@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import "../styles/HomePage.css";
 import { WeatherContainer } from "../containers/WeatherContainer";
 import { WeatherForecastContainer } from "../containers/WeatherForecastContainer";
+import { WeatherSearch } from "../components/WeatherSearch";
 
 export const HomePage: React.FC = () => {
   useEffect(() => {
@@ -11,6 +12,8 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="home-page">
+      <WeatherSearch />
+
       <div className="home-container">
         <WeatherContainer />
         <WeatherForecastContainer />

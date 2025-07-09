@@ -6,3 +6,25 @@
   gap: 20px;
   margin-top: 40px;
 }
+
+.today-forecast {
+  background: var(--bg-secondary);
+  border-radius: 20px;
+  padding: 30px;
+  margin: 20px 0;
+}
+
+.today-forecast-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.today-forecast-content {
+  display: flex;
+}
+
+.current-weather-icon {
+  width: 80px;
+  height: 80px;
+}

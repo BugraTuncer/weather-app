@@ -37,20 +37,21 @@ export const WeatherForecast: React.FC<WeatherForecastProps> = ({
             >
               <div className="day-info">
                 <div className="day-name">{day.day}</div>
-                <div className="day-date">
-                  {new Date(day.date ?? "").toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </div>
               </div>
 
-              <div className="day-weather">
+              <div className="day-weather-container">
                 <img
                   src={getWeatherIcon(day.weather[0].icon)}
                   alt={day.weather[0].description}
                   className="day-weather-icon"
                 />
+                <div>
+                  {day.weather[0].description.charAt(0).toUpperCase() +
+                    day.weather[0].description.slice(1)}
+                </div>
+              </div>
+
+              <div className="day-weather">
                 <div className="day-temps">
                   <span className="temp-max">
                     {formatTemperature(day.main.temp_max)}

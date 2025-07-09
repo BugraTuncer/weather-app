@@ -19,42 +19,44 @@ export const WeatherHeader: React.FC = () => {
 
   return (
     <div className="weather-header">
-      <h1 className="header-title">Weather App</h1>
-      <div className="header-controls">
-        <div className="button-toggle">
-          <button
-            className={`btn ${language === "en" ? "active" : ""}`}
-            onClick={() => dispatch(setLanguage("en"))}
-          >
-            EN
-          </button>
-          <button
-            className={`btn ${language === "es" ? "active" : ""}`}
-            onClick={() => dispatch(setLanguage("es"))}
-          >
-            ES
-          </button>
-        </div>
+      <div className="header-container">
+        <h1 className="header-title">Weather App</h1>
+        <div className="header-controls">
+          <div className="button-toggle">
+            <button
+              className={`btn ${language === "en" ? "active" : ""}`}
+              onClick={() => dispatch(setLanguage("en"))}
+            >
+              EN
+            </button>
+            <button
+              className={`btn ${language === "es" ? "active" : ""}`}
+              onClick={() => dispatch(setLanguage("es"))}
+            >
+              ES
+            </button>
+          </div>
 
-        <div className="button-toggle">
-          <button
-            className={`btn ${units === "metric" ? "active" : ""}`}
-            onClick={() => dispatch(setUnits("metric"))}
-          >
-            {t("header.units.celsius")}
-          </button>
-          <button
-            className={`btn ${units === "imperial" ? "active" : ""}`}
-            onClick={() => dispatch(setUnits("imperial"))}
-          >
-            {t("header.units.fahrenheit")}
-          </button>
-        </div>
+          <div className="button-toggle">
+            <button
+              className={`btn ${units === "metric" ? "active" : ""}`}
+              onClick={() => dispatch(setUnits("metric"))}
+            >
+              {t("header.units.celsius")}
+            </button>
+            <button
+              className={`btn ${units === "imperial" ? "active" : ""}`}
+              onClick={() => dispatch(setUnits("imperial"))}
+            >
+              {t("header.units.fahrenheit")}
+            </button>
+          </div>
 
-        <div className="button-toggle">
-          <button className="btn" onClick={() => dispatch(toggleDarkMode())}>
-            {!isDarkMode ? "🌙" : "☀️"}
-          </button>
+          <div className="button-toggle">
+            <button className="btn" onClick={() => dispatch(toggleDarkMode())}>
+              {!isDarkMode ? "🌙" : "☀️"}
+            </button>
+          </div>
         </div>
       </div>
     </div>
