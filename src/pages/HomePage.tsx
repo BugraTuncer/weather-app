@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { motion } from "framer-motion";
 
 import "../styles/HomePage.css";
 import { WeatherContainer } from "../containers/WeatherContainer";
@@ -7,17 +8,41 @@ import { WeatherSearch } from "../components/WeatherSearch";
 
 export const HomePage: React.FC = () => {
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
   }, []);
 
+  const pageVariants = {
+    initial: {
+      opacity: 0,
+    },
+    animate: {
+      opacity: 1,
+    },
+  };
+
   return (
-    <div className="home-page">
-      <WeatherSearch />
+    <motion.div
+      className="home-page"
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+    >
+      <motion.div initial="initial" animate="animate">
+        <WeatherSearch />
+      </motion.div>
 
       <div className="home-container">
-        <WeatherContainer />
-        <WeatherForecastContainer />
+        <div className="weather-column">
+          <WeatherContainer />
+        </div>
+        <div className="forecast-column">
+          <WeatherForecastContainer />
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

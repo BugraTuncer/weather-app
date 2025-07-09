@@ -20,6 +20,7 @@ interface WeatherCardProps {
   showDetails?: boolean;
   currentWeather?: WeatherData;
   todayForecast?: React.ReactNode;
+  unit: string;
 }
 
 export const WeatherCard: React.FC<WeatherCardProps> = ({
@@ -30,6 +31,7 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({
   showDetails = true,
   currentWeather,
   todayForecast,
+  unit,
 }) => {
   const { t } = useI18n();
   return (
@@ -62,12 +64,12 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({
           <div className="weather-main">
             <div className="temperature-section">
               <div className="current-temp">
-                {formatTemperature(weather.main.temp)}
+                {formatTemperature(weather.main.temp, unit)}
               </div>
               {weather.main.feels_like && (
                 <div className="feels-like">
                   {t("weather.feelsLike")}{" "}
-                  {formatTemperature(weather.main.feels_like)}
+                  {formatTemperature(weather.main.feels_like, unit)}
                 </div>
               )}
             </div>
@@ -125,7 +127,7 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({
               <div className="detail-item">
                 <span className="detail-label">{t("forecast.high")}</span>
                 <span className="detail-value">
-                  {formatTemperature(weather.main.temp_max)}
+                  {formatTemperature(weather.main.temp_max, unit)}
                 </span>
               </div>
             )}
@@ -133,7 +135,7 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({
               <div className="detail-item">
                 <span className="detail-label">{t("forecast.low")}</span>
                 <span className="detail-value">
-                  {formatTemperature(weather.main.temp_min)}
+                  {formatTemperature(weather.main.temp_min, unit)}
                 </span>
               </div>
             )}

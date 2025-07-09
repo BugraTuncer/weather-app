@@ -13,7 +13,11 @@ import { LoadingSpinner } from "../components/LoadingSpinner";
 import { ErrorDisplay } from "../components/ErrorDisplay";
 import { EmptyState } from "../components/EmptyState";
 import { WeatherCard } from "../components/WeatherCard";
-import { getWeatherDescription, getWeatherIcon } from "../utils/weatherUtils";
+import {
+  formatTemperature,
+  getWeatherDescription,
+  getWeatherIcon,
+} from "../utils/weatherUtils";
 
 export const WeatherContainer: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -31,7 +35,13 @@ export const WeatherContainer: React.FC = () => {
     isLoading: weatherByCoordsLoading,
     error: weatherByCoordsError,
   } = useQuery({
-    queryKey: ["weatherByCoords", coordsParams?.lat, coordsParams?.lon, units],
+    queryKey: [
+      "weatherByCoords",
+      coordsParams?.lat,
+      coordsParams?.lon,
+      units,
+      language,
+    ],
     queryFn: () => {
       if (!coordsParams) throw new Error("No coordinates specified");
       return weatherApi.getCurrentWeatherByCoords(
@@ -54,7 +64,7 @@ export const WeatherContainer: React.FC = () => {
     isLoading: weatherByCityLoading,
     error: weatherByCityError,
   } = useQuery({
-    queryKey: ["weatherByCity", queryParams?.city, units],
+    queryKey: ["weatherByCity", queryParams?.city, units, language],
     queryFn: () => {
       if (!queryParams) throw new Error("No city specified");
       return weatherApi.getCurrentWeatherByCity(
@@ -145,7 +155,7 @@ export const WeatherContainer: React.FC = () => {
     return (
       <div className="today-forecast">
         <div className="today-forecast-header">
-          <h2>Today's Forecast</h2>
+          <h2>{t("forecast.todayForecast")}</h2>
         </div>
         <div className="today-forecast-content">
           {currentDayHourlyData?.map((hour) => (
@@ -159,7 +169,7 @@ export const WeatherContainer: React.FC = () => {
                 alt={getWeatherDescription(hour)}
                 className="current-weather-icon"
               />
-              <p>{hour.main.temp}°C</p>
+              <p>{formatTemperature(hour.main.temp, units)}</p>
             </div>
           ))}
         </div>
@@ -177,6 +187,7 @@ export const WeatherContainer: React.FC = () => {
           showLocation={true}
           showDetails={true}
           todayForecast={<TodayForecast />}
+          unit={units}
         />
       </div>
     );

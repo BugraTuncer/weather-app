@@ -22,6 +22,7 @@
   font-weight: 700;
   color: var(--text-primary);
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .header-controls {

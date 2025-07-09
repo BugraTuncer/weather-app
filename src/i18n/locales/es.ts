@@ -34,6 +34,7 @@ export const es = {
       "El pronóstico del clima aparecerá aquí una vez que se establezca la ubicación.",
     high: "Máx",
     low: "Mín",
+    todayForecast: "Pronóstico de Hoy",
   },
 
   detail: {

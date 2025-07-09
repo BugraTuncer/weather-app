@@ -31,7 +31,6 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
-  padding: 20px 0;
 }
 
 .current-temp {
@@ -52,7 +51,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
 }
 
 .weather-icon {
@@ -120,4 +118,20 @@
   font-size: 1.2rem;
   color: var(--text-secondary);
   font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .city-name {
+    font-size: 1.5rem;
+  }
+  .country {
+    font-size: 1rem;
+  }
+  .weather-icon {
+    width: 100px;
+    height: 100px;
+  }
+  .weather-description {
+    font-size: 1rem;
+  }
 }

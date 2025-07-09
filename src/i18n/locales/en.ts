@@ -34,6 +34,7 @@ export const en = {
       "Weather forecast will appear here once location is set.",
     high: "High",
     low: "Low",
+    todayForecast: "Today's Forecast",
   },
 
   detail: {

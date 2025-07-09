@@ -26,6 +26,7 @@ export const WeatherForecastContainer: React.FC = () => {
       coordsParams?.lat,
       coordsParams?.lon,
       units,
+      language,
     ],
     queryFn: () => {
       if (queryParams) {
@@ -152,5 +153,12 @@ export const WeatherForecastContainer: React.FC = () => {
     );
   }
 
-  return <WeatherForecast forecast={forecast} navigate={navigate} t={t} />;
+  return (
+    <WeatherForecast
+      forecast={forecast}
+      navigate={navigate}
+      t={t}
+      unit={units}
+    />
+  );
 };

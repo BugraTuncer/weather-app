@@ -4,8 +4,12 @@ export const getWeatherIcon = (iconCode: string): string => {
   return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
 };
 
-export const formatTemperature = (temp: number): string => {
-  return `${Math.round(temp)}°C`;
+export const formatTemperature = (temp: number, unit: string): string => {
+  if (unit === "metric") {
+    return `${Math.round(temp)}°C`;
+  } else {
+    return `${Math.round(temp)}°F`;
+  }
 };
 
 export const getWeatherDescription = (weather: WeatherData): string => {

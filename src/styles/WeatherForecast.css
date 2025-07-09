@@ -1,5 +1,5 @@
 .forecast-title {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 700;
   color: var(--text-primary);
   text-align: center;
@@ -11,12 +11,13 @@
   gap: 30px;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .forecast-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 30px;
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -52,7 +53,7 @@
 }
 
 .day-name {
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -86,13 +87,34 @@
 }
 
 .temp-max {
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: var(--text-primary);
 }
 
 .temp-min {
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   color: var(--text-secondary);
   font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .forecast-title {
+    font-size: 1.5rem;
+  }
+  .temp-max {
+    font-size: 1.1rem;
+  }
+  .temp-min {
+    font-size: 1rem;
+  }
+  .day-name {
+    font-size: 1.2rem;
+  }
+  .day-date {
+    font-size: 0.8rem;
+  }
+  .forecast-day {
+    gap: 60px;
+  }
 }

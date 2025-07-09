@@ -4,6 +4,7 @@ import { useI18n } from "../hooks/useI18n";
 import { setUnits } from "../store/slices/weatherSlice";
 import { setLanguage, toggleDarkMode } from "../store/slices/uiSlice";
 import "../styles/WeatherHeader.css";
+import { useNavigate } from "react-router-dom";
 
 export const WeatherHeader: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -12,7 +13,7 @@ export const WeatherHeader: React.FC = () => {
     (state) => state.ui as { language: "en" | "es"; isDarkMode: boolean }
   );
   const { t } = useI18n();
-
+  const navigate = useNavigate();
   if (!currentWeather) {
     return null;
   }
@@ -20,7 +21,9 @@ export const WeatherHeader: React.FC = () => {
   return (
     <div className="weather-header">
       <div className="header-container">
-        <h1 className="header-title">Weather App</h1>
+        <h1 className="header-title" onClick={() => navigate("/")}>
+          Weather App
+        </h1>
         <div className="header-controls">
           <div className="button-toggle">
             <button
