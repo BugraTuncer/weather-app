@@ -4,6 +4,7 @@ import { useAppSelector, useAppDispatch } from "../store/hooks";
 import {
   setCurrentWeather,
   removeSavedWeather,
+  setQueryParams,
 } from "../store/slices/weatherSlice";
 import {
   celsiusToFahrenheit,
@@ -38,7 +39,13 @@ const SavedWeathersListComponent: React.FC = () => {
   }, [savedWeathers]);
 
   const handleWeatherClick = (weather: WeatherData) => {
-    dispatch(setCurrentWeather(weather));
+    // Set query params to trigger API call for fresh weather data
+    dispatch(
+      setQueryParams({
+        city: weather.name,
+        units: units,
+      })
+    );
   };
 
   const handleRemoveWeather = (weatherToRemove: WeatherData) => {

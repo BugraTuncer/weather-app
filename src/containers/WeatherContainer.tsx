@@ -154,6 +154,12 @@ export const WeatherContainer: React.FC = () => {
   }, [coordsParams, dispatch]);
 
   useEffect(() => {
+    if (queryParams) {
+      dispatch(setCoordsParams(null));
+    }
+  }, [queryParams, dispatch]);
+
+  useEffect(() => {
     if (activeData) {
       dispatch(setCurrentWeather(activeData));
       dispatch(setCurrentDayHourlyData(null));
