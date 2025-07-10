@@ -39,7 +39,6 @@ const SavedWeathersListComponent: React.FC = () => {
   }, [savedWeathers]);
 
   const handleWeatherClick = (weather: WeatherData) => {
-    // Set query params to trigger API call for fresh weather data
     dispatch(
       setQueryParams({
         city: weather.name,

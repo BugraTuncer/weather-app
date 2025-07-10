@@ -17,6 +17,7 @@ interface WeatherForecastProps {
   t: (key: string) => string;
   unit: string;
   forecastUnits: string;
+  savedWeatherData: WeatherData | undefined | null;
 }
 
 export const WeatherForecast: React.FC<WeatherForecastProps> = ({
@@ -25,6 +26,7 @@ export const WeatherForecast: React.FC<WeatherForecastProps> = ({
   t,
   unit,
   forecastUnits,
+  savedWeatherData,
 }) => {
   const dispatch = useAppDispatch();
 
@@ -89,7 +91,12 @@ export const WeatherForecast: React.FC<WeatherForecastProps> = ({
                   className="day-weather-icon"
                 />
                 <div>
-                  {t(`weather.${day.weather[0].description.replace(" ", "")}`)}
+                  {savedWeatherData
+                    ? t(
+                        `weather.${day.weather[0].description.replace(" ", "")}`
+                      )
+                    : day.weather[0].description.charAt(0).toUpperCase() +
+                      day.weather[0].description.slice(1).toLowerCase()}
                 </div>
               </div>
 

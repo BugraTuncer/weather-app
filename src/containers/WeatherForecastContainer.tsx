@@ -196,6 +196,7 @@ export const WeatherForecastContainer: React.FC = () => {
       t={t}
       unit={units}
       forecastUnits={savedWeatherData?.units || units}
+      savedWeatherData={savedWeatherData?.weather}
     />
   );
 };
